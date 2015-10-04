@@ -13,6 +13,7 @@ class AboutView {
 
     <body>
     <h1>This is the DataFrame About Page!</h1>
+    We'll add something soon.
     </body>
 
     </html>
