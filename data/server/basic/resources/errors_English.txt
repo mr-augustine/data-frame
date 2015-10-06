@@ -1,0 +1,8 @@
+SENSOR_DESCRIP_TOO_LONG The sensor description is too long (limit 255 characters)
+SENSOR_NAME_EMPTY The sensor name cannot be empty or only contain whitespace
+SENSOR_NAME_INVALID The sensor name is invalid (only use letters, numbers, dashes, and underscores)
+SENSOR_NAME_TOO_LONG The sensor name is too long (limit 255 characters)
+SENSOR_TYPE_EMPTY The sensor type cannot be empty
+SENSOR_TYPE_INVALID The sensor type is invalid
+SENSOR_UNITS_EMPTY The sensor units cannot be empty
+SENSOR_UNITS_INVALID The sensor units are invalid
