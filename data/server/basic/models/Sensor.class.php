@@ -14,6 +14,7 @@ class Sensor {
     private $description;
     private $name;
     private $type;
+    private $units;
 
     public function __construct($formInput = null) {
         $this->formInput = $formInput;
@@ -53,10 +54,14 @@ class Sensor {
         return $this->type;
     }
 
+    public function getUnits() {
+        return $this->units;
+    }
+
     public function __toString() {
         $str = "[" . get_class($this) . ": name=" . $this->getName() . ", type=" .
-                $this->getType() . ", description=" . $this->getDescription() .
-                "]";
+                $this->getType() . ", units= " . $this->getUnits() . ", description=" .
+                $this->getDescription() . "]";
 
         return $str;
     }
@@ -81,7 +86,11 @@ class Sensor {
             $this->initializeEmpty();
         else {
             $this->validateName();
+
+            // Type validation must occur before Units validation
             $this->validateType();
+            $this->validateUnits();
+
             $this->validateDescription();
         }
     }
@@ -92,6 +101,7 @@ class Sensor {
         $this->description = "";
         $this->name = "";
         $this->type = "";
+        $this->units = "";
     }
 
     private function validateDescription() {
@@ -123,15 +133,23 @@ class Sensor {
     private function validateType() {
         // Type is a mandatory field
         // It may only be one of the predefined types
+        $this->type = $this->extractForm('type');
                 
-        //TODO flesh out the details
+        if (empty($this->type))
+            $this->setError('type', 'SENSOR_TYPE_EMPTY');
+        elseif (!in_array($this->type, self::$SENSOR_TYPES))
+            $this->setError('type', 'SENSOR_TYPE_INVALID');
     }
 
     private function validateUnits() {
         // Units is a mandatory field
         // It/They must mach with the predefined type
+        $this->units = $this->extractForm('units');
 
-        //TODO flesh out the details
+        if (empty($this->units))
+            $this->setError('units', 'SENSOR_UNITS_EMPTY');
+        elseif (strcmp(self::$UNITS[$this->units], $this->type) != 0)
+            $this->setError('units', 'SENSOR_UNITS_INVALID');
     }
 }
 
