@@ -106,7 +106,7 @@ class Sensor {
 
     private function validateDescription() {
         // Description is an optional field
-        // If set, length cannot exceed SENSOR_DESCRIP_TOO_LONG
+        // If set, length cannot exceed DESCRIP_MAX_LENGTH
         $this->description = $this->extractForm('description');
 
         if (!empty($this->description)) {
