@@ -13,7 +13,11 @@ class HomeView {
 
     <body>
     <h1>This is the DataFrame Home Page!</h1>
-    Nothing to see yet.
+
+    <section>
+        <h2>Links</h2>
+        <a href="settings">Settings</a> 
+    </section>
     </body>
 
     </html>
