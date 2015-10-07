@@ -11,11 +11,14 @@
         $control = $urlPieces[2];
 
     switch ($control) {
+        case "about":
+            AboutView::show();
+            break;
         case "home":
             HomeView::show();
             break;
-        case "about":
-            AboutView::show();
+        case "settings":
+            SettingsView::show();
             break;
         default:
             HomeView::show();
