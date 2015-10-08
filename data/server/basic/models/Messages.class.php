@@ -18,7 +18,7 @@ class Messages {
     }
 
     public static function getError($errorName) {
-        if (isset(self::$errors, $errorName))
+        if (array_key_exists($errorName, self::$errors))
             return self::$errors[$errorName];
         else
             return "";
