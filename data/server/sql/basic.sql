@@ -1,0 +1,7 @@
+DROP DATABASE if EXISTS basic;
+CREATE DATABASE basic;
+USE basic;
+
+DROP TABLE if EXISTS Sensors;
+CREATE TABLE Sensors (
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
