@@ -14,5 +14,15 @@ class SensorTest extends PHPUnit_Framework_TestCase {
         $this->assertTrue(is_a($s1, 'Sensor') && $s1->getErrorCount() == 0,
             'It should create a valid Sensor object when valid input is provided');
     }
+
+    public function testInvalidName() {
+        $invalidSensorFields = array("name" => '$ensor1',
+                                "units" => array("temperature.deg_C", "pressure.mm_Hg"),
+                                "description" => "This is a test sensor");
+        $s1 = new Sensor($invalidSensorFields);
+
+        $this->assertTrue(!empty($s1->getError('name')),
+            'It should have a name error if the sensor name is invalid');
+    }
 }
 ?>
