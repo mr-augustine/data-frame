@@ -79,9 +79,23 @@ class Sensor {
         $value = "";
 
         if (isset($this->formInput[$valueName])) {
-            $value = trim($this->formInput[$valueName]);
-            $value = stripslashes($value);
-            $value = htmlspecialchars($value);
+
+            // Handle leaf-values and array-values differently
+            if (!is_array($this->formInput[$valueName])) {
+                $value = trim($this->formInput[$valueName]);
+                $value = stripslashes($value);
+                $value = htmlspecialchars($value);
+            } else {
+                $value = array();
+
+                foreach ($this->formInput[$valueName] as $arrayValue) {
+                    $tempValue = trim($arrayValue);
+                    $tempValue = stripslashes($arrayValue);
+                    $tempValue = htmlspecialchars($arrayValue);
+
+                    array_push($value, $tempValue);
+                }
+            }
 
             return $value;
         }
@@ -142,7 +156,7 @@ class Sensor {
         if (empty($this->units))
             $this->setError('units', 'SENSOR_UNITS_EMPTY');
         else {
-            foreach ($units as $unit) {
+            foreach ($this->units as $unit) {
                 if (!in_array($unit, self::$UNITS)) {
                     $this->setError('units', 'SENSOR_UNITS_INVALID');
                     // Set an error after the first occurence
