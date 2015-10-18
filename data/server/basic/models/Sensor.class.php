@@ -1,8 +1,9 @@
 <?php
 class Sensor {
-    public static $SENSOR_TYPES = array("temperature");
-    public static $UNITS = array("degrees_C" => "temperature",
-                                "degrees_F" => "temperature");
+    public static $UNITS = array("temperature.deg_C",
+                                "temperature.deg_F",
+                                "pressure.mm_Hg",
+                                "pressure.in_Hg");
 
     private static $DESCRIP_MAX_LENGTH = 255;
     private static $NAME_MAX_LENGTH = 255;
@@ -11,10 +12,14 @@ class Sensor {
     private $errors;
     private $formInput;
 
+    // Fields from the form
     private $description;
     private $name;
-    private $type;
     private $units;
+
+    // Fields from the database
+    private $dateAdded;
+    private $sensorId;
 
     public function __construct($formInput = null) {
         $this->formInput = $formInput;
@@ -50,18 +55,22 @@ class Sensor {
         return $this->name;
     }
 
-    public function getType() {
-        return $this->type;
-    }
-
     public function getUnits() {
         return $this->units;
     }
 
+    public function setDateAdded($date) {
+        $this->dateAdded = $date;
+    }
+
+    public function setSensorId($id) {
+        $this->sensorId = $id;
+    }
+
     public function __toString() {
-        $str = "[" . get_class($this) . ": name=" . $this->getName() . ", type=" .
-                $this->getType() . ", units= " . $this->getUnits() . ", description=" .
-                $this->getDescription() . "]";
+        $str = "[" . get_class($this) . ": name=" . $this->getName() .
+                ", units= " . print_r($this->getUnits(), true) .
+                ", description=" . $this->getDescription() . "]";
 
         return $str;
     }
@@ -86,11 +95,7 @@ class Sensor {
             $this->initializeEmpty();
         else {
             $this->validateName();
-
-            // Type validation must occur before Units validation
-            $this->validateType();
             $this->validateUnits();
-
             $this->validateDescription();
         }
     }
@@ -100,8 +105,7 @@ class Sensor {
         $this->errors = array();
         $this->description = "";
         $this->name = "";
-        $this->type = "";
-        $this->units = "";
+        $this->units = array();
     }
 
     private function validateDescription() {
@@ -130,17 +134,6 @@ class Sensor {
         }
     }
 
-    private function validateType() {
-        // Type is a mandatory field
-        // It may only be one of the predefined types
-        $this->type = $this->extractForm('type');
-                
-        if (empty($this->type))
-            $this->setError('type', 'SENSOR_TYPE_EMPTY');
-        elseif (!in_array($this->type, self::$SENSOR_TYPES))
-            $this->setError('type', 'SENSOR_TYPE_INVALID');
-    }
-
     private function validateUnits() {
         // Units is a mandatory field
         // It/They must mach with the predefined type
@@ -148,8 +141,15 @@ class Sensor {
 
         if (empty($this->units))
             $this->setError('units', 'SENSOR_UNITS_EMPTY');
-        elseif (strcmp(self::$UNITS[$this->units], $this->type) != 0)
-            $this->setError('units', 'SENSOR_UNITS_INVALID');
+        else {
+            foreach ($units as $unit) {
+                if (!in_array($unit, self::$UNITS)) {
+                    $this->setError('units', 'SENSOR_UNITS_INVALID');
+                    // Set an error after the first occurence
+                    break;
+                }
+            }
+        }
     }
 }
 
