@@ -49,7 +49,8 @@ class SensorsDB {
  
             foreach ($units as $unit) {
                 // Translate the unit to a unitId
-                $unitId = UnitsDB::getUnitBy("unitName", $unit);
+                // The getUnitBy() function returns an array
+                $unitId = (UnitsDB::getUnitBy("unitName", $unit))[0];
 
                 // Perform the INSERT using the unitId
                 $statement = $db->prepare($query);
