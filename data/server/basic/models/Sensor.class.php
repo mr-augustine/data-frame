@@ -62,6 +62,10 @@ class Sensor {
         $this->sensorId = $id;
     }
 
+    public function setSensorUnits($units) {
+        $this->units = $units;
+    }
+    
     public function __toString() {
         $str = "[" . get_class($this) . ": name=" . $this->getName() .
                 ", units= " . print_r($this->getUnits(), true) .

@@ -76,16 +76,56 @@ class SensorsDB {
         return $returnId;
     }
 
-    public static function getSensorsBy($type, $value) {
-
+    public static function getSensorsBy($type = null, $value = null) {
+        $sensorRows = SensorsDB::getSensorRowsBy($type, $value);
+        
+        return SensorsDB::getSensorArray($sensorRows);
     }
 
-    public static function getSensorRowsBy($type, $value, $column) {
-
+    public static function getSensorRowsBy($type = null, $value = null, $column = null) {
+        $allowedTypes = ["sensorId", "sensorName", "description"];
+        $sensorRows = array();
+        
+        try {
+            $db = Database::getDB();
+            $query = "SELECT sensorId, sensorName, description, dateAdded FROM Sensors";
+            
+            if (!is_null($type)) {
+                if (!in_array($type, $allowedTypes))
+                    throw new PDOException("$type not an allowed search criterion for Sensors");
+                    
+                $query = $query . " WHERE ($type = :$type)";
+                $statement = $db->prepare($query);
+                $statement->bindParam(":$type", $value);
+            } else
+                $statement = $db->prepare($query);
+                
+            $statement->execute();
+            $sensorRows = $statement->fetchAll(PDO::FETCH_ASSOC);
+            $statement->closeCursor();
+        } catch (Exception $e) {
+            echo "<p>Error getting sensor rows by $type: " . $e->getMessage()."</p>";
+        }
+        
+        return $sensorRows;
     }
 
     public static function getSensorsArray($rows) {
-
+        $sensors = array();
+        
+        if (!empty($rows)) {
+            foreach ($rows as $row) {
+                $sensor = new Sensor($row);
+                $sensor->setSensorId($row['sensorId']);
+                
+                // TODO: Also fetch the associated units for the sensor,
+                // then set the units (setSensorUnits()) before array_push
+                
+                array_push($sensors, $sensor);
+            }
+        }
+        
+        return $sensors;
     }
 }
 

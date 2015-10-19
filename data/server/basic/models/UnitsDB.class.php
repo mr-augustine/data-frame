@@ -2,7 +2,25 @@
 class UnitsDB {
 
     public static function addUnit($unit) {
-
+        $query = "INSERT INTO Units (unitName)
+                    VALUES (:unitName)";
+                    
+        try {
+            if (is_null($unit) || $unit->getErrorCount() > 0)
+                return $unit;
+                
+            $db = Database::getDB();
+            $statement = $db->prepare($query);
+            $statement->bindValue(":unitName", $unit->getUnitName());
+            $statement->execute();
+            $statement->closeCursor();
+            
+            $unit->setUnitId($db->lastInsertId("unitId"));
+        } catch (Exception $e) {
+            $unit->setError('unitId', 'UNIT_INVALID');
+        }
+        
+        return $unit;
     }
 
     // Returns an array of Unit objects extracted from $rows
@@ -49,9 +67,9 @@ class UnitsDB {
     }
 
     public static function getUnitsBy($type = null, $value = null) {
-        $unitRows = UnitsDB::getUnitRowsBy($type, $value);
+        $unitRows = UnitsDB::getUnitsRowsBy($type, $value);
 
-        return UsersDB::getUnitsArray($unitRows);
+        return UnitsDB::getUnitsArray($unitRows);
     }
 }
 ?>

@@ -11,8 +11,8 @@ class Unit {
     private $errors;
     private $formInput;
     
-    private $unitId
-    private $unitName
+    private $unitId;
+    private $unitName;
     
     public function __construct($formInput = null) {
         $this->formInput = $formInput;
@@ -45,7 +45,7 @@ class Unit {
     }
     
     private function extractForm($valueName) {
-        $value = ""
+        $value = "";
         
         // Expecting array("unitName" => "temperature.deg_C")
         // or similar, with optional "unitId" => 1
