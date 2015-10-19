@@ -5,6 +5,7 @@ class UnitsDB {
 
     }
 
+    // Returns an array of Unit objects extracted from $rows
     public static function getUnitsArray($rows) {
         $units = array();
 

@@ -6,3 +6,6 @@ SENSOR_TYPE_EMPTY The sensor type cannot be empty
 SENSOR_TYPE_INVALID The sensor type is invalid
 SENSOR_UNITS_EMPTY The sensor units cannot be empty
 SENSOR_UNITS_INVALID The sensor units are invalid
+UNIT_NAME_EMPTY The unit name cannot be empty
+UNIT_NAME_HAS_INVALID_CHARS The unit name is invalid (only use alphanum, underscores, dashes, and periods)
+UNIT_NAME_TOO_LONG The unit name is too long (limit 255 characters)
