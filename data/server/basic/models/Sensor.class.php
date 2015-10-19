@@ -1,10 +1,5 @@
 <?php
 class Sensor {
-    public static $UNITS = array("temperature.deg_C",
-                                "temperature.deg_F",
-                                "pressure.mm_Hg",
-                                "pressure.in_Hg");
-
     private static $DESCRIP_MAX_LENGTH = 255;
     private static $NAME_MAX_LENGTH = 255;
 
@@ -157,7 +152,7 @@ class Sensor {
             $this->setError('units', 'SENSOR_UNITS_EMPTY');
         else {
             foreach ($this->units as $unit) {
-                if (!in_array($unit, self::$UNITS)) {
+                if (!in_array($unit, Unit::$UNITS)) {
                     $this->setError('units', 'SENSOR_UNITS_INVALID');
                     // Set an error after the first occurence
                     break;

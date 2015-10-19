@@ -31,5 +31,9 @@ class Database {
 
         return self::$db;
     }
+    
+    public static function clearDB() {
+        self::$db = null;
+    }
 }
 ?>

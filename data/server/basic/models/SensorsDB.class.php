@@ -28,8 +28,8 @@ class SensorsDB {
 
             if ($returnUnitAssocId == 0) {
                 // Delete the new Sensor from Sensors
-                // Restore $returnId = 0
-                // Throw and exception
+                $returnId = 0;
+                throw new PDOException("Invalid Sensor units");
             }
 
         } catch (PDOException $e) {
@@ -45,22 +45,29 @@ class SensorsDB {
         $returnId = 0;
 
         try {
-            $db = Database::getDB();
+            
  
             foreach ($units as $unit) {
                 // Translate the unit to a unitId
-                // The getUnitBy() function returns an array
-                $unitId = (UnitsDB::getUnitBy("unitName", $unit))[0];
+                // The getUnitBy() function returns an array of Unit objects
+                $unitObject = (UnitsDB::getUnitBy("unitName", $unit));
+                $unitId = $unitObject->getUnitId();
 
+                // TODO: Not sure if we need to open and close the db connection
+                // each time we do a unitId translation; or just open and close once
+                $db = Database::getDB();
+                
                 // Perform the INSERT using the unitId
                 $statement = $db->prepare($query);
                 $statement->bindValue(":sensorId", $sensorId);
                 $statement->bindValue(":unitId", $unitId);
                 $statement->execute();
                 $statement->closeCursor();
-
+                
+                // TODO: add error trap in case INSERT goes wrong
                 $returnId = $db->lastInsertId("unitAssocId");
             }
+            
         } catch (PDOException $e) {
             echo "<p>Error adding sensor unit association to SensorUnitAssocs ".
                 $e->getMessage()."</p>";

@@ -6,6 +6,7 @@ DROP TABLE if EXISTS Sensors;
 CREATE TABLE Sensors (
     sensorId        int(11) NOT NULL AUTO_INCREMENT,
     sensorName      varchar(255) UNIQUE NOT NULL COLLATE utf8_unicode_ci,
+    description     varchar(255) COLLATE utf8_unicode_ci,
     dateAdded       TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     PRIMARY KEY (sensorId)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
