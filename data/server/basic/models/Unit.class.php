@@ -27,6 +27,10 @@ class Unit {
             return "";
     }
     
+    public function getErrorCount() {
+        return $this->errorCount;
+    }
+    
     private function initialize() {
         $this->errorCount = 0;
         $errors = array();
@@ -67,6 +71,10 @@ class Unit {
         $this->errorCount++;
     }
     
+    public function getErrors() {
+        return $this->errors;
+    }
+    
     public function getUnitName() {
         return $this->unitName;
     }
@@ -76,6 +84,8 @@ class Unit {
     }
     
     public function validateUnitName() {
+        $this->unitName = $this->extractForm('unitName');
+        
         if (empty($this->unitName)) {
             $this->setError('unitName', 'UNIT_NAME_EMPTY');
         } elseif (strlen($this->unitName) > self::$MAX_UNITNAME_LENGTH) {

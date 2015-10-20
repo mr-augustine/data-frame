@@ -22,6 +22,36 @@ class UnitsDBTest extends PHPUnit_Framework_TestCase {
             $this->assertTrue(is_a($unit, 'Unit'),
                 'It should return valid Unit objects');
     }
+    
+    public function testInsertValidUnit() {
+        $myDB = DBMaker::create('dataframetest');
+        Database::clearDB();
+        $db = Database::getDB('dataframetest', '/home/mr-augustine/myConfig.ini');
+        $beforeCount = count(UnitsDB::getUnitsBy());
+        $validTest = array("unitName" => "electricity.V");
+        $s1 = new Unit($validTest);
+        $newUnit = UnitsDB::addUnit($s1);
+        
+        $this->assertEquals(0, $newUnit->getErrorCount(),
+            'The created unit should not have errors');
+        
+        $afterCount = count(UnitsDB::getUnitsBy());
+        
+        $this->assertEquals($afterCount, $beforeCount + 1,
+            'The database should have one more unit after insertion');
+    }
+    
+    public function testInsertDuplicateUnit() {
+    
+    }
+    
+    public function testInsertEmptyUnit() {
+    
+    }
+    
+    public function testInsertInvalidUnit() {
+    
+    }
 }
 
 ?>
