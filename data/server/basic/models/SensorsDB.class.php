@@ -49,8 +49,11 @@ class SensorsDB {
  
             foreach ($units as $unit) {
                 // Translate the unit to a unitId
-                // The getUnitBy() function returns an array of Unit objects
-                $unitObject = (UnitsDB::getUnitBy("unitName", $unit));
+                // The getUnitBy() function returns an array of Unit objects.
+                // However, there can be only one Unit in this case since unitNames
+                // are unique.
+                $unitObjects = UnitsDB::getUnitsBy("unitName", $unit);
+                $unitObject = $unitObjects[0];
                 $unitId = $unitObject->getUnitId();
 
                 // TODO: Not sure if we need to open and close the db connection
@@ -79,7 +82,7 @@ class SensorsDB {
     public static function getSensorsBy($type = null, $value = null) {
         $sensorRows = SensorsDB::getSensorRowsBy($type, $value);
         
-        return SensorsDB::getSensorArray($sensorRows);
+        return SensorsDB::getSensorsArray($sensorRows);
     }
 
     public static function getSensorRowsBy($type = null, $value = null, $column = null) {
