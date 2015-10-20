@@ -42,15 +42,45 @@ class UnitsDBTest extends PHPUnit_Framework_TestCase {
     }
     
     public function testInsertDuplicateUnit() {
-    
+        $myDB = DBMaker::create('dataframetest');
+        Database::clearDB();
+        $db = Database::getDB('dataframetest', '/home/mr-augustine/myConfig.ini');
+        $beforeCount = count(UnitsDB::getUnitsBy());
+        $duplicateTest = array("unitName" => "temperature.deg_C");
+        $s1 = new Unit($duplicateTest);
+        $newUnit = UnitsDB::addUnit($s1);
+        $afterCount = count(UnitsDB::getUnitsBy());
+        
+        $this->assertEquals($afterCount, $beforeCount,
+            'The database should have the same number of elements after trying to insert the duplicate');
     }
     
     public function testInsertEmptyUnit() {
-    
+        $myDB = DBMaker::create('dataframetest');
+        Database::clearDB();
+        $db = Database::getDB('dataframetest', '/home/mr-augustine/myConfig.ini');
+        $beforeCount = count(UnitsDB::getUnitsBy());
+        $invalidTest = array("unitName" => "");
+        $s1 = new Unit($invalidTest);
+        $newUnit = UnitsDB::addUnit($s1);
+        $afterCount = count(UnitsDB::getUnitsBy());
+        
+        $this->assertEquals($afterCount, $beforeCount,
+            'The database should have the same number of elements after trying to insert the empty Unit');
     }
     
     public function testInsertInvalidUnit() {
-    
+        $myDB = DBMaker::create('dataframetest');
+        Database::clearDB();
+        $db = Database::getDB('dataframetest', '/home/mr-augustine/myConfig.ini');
+        $beforeCount = count(UnitsDB::getUnitsBy());
+        $invalidTest = array("unitName" => "@temperature.deg_C");
+        $s1 = new Unit($invalidTest);
+        $newUnit = UnitsDB::addUnit($s1);
+        $afterCount = count(UnitsDB::getUnitsBy());
+        
+        $this->assertEquals($afterCount, $beforeCount,
+            'The database should have the same number of elements after trying to insert the invalid Unit');
     }
 }
 
