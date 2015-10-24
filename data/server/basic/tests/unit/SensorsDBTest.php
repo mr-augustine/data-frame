@@ -41,7 +41,22 @@ class SensorsDBTest extends PHPUnit_Framework_TestCase {
     }
     
     public function testInsertDuplicateSensor() {
-    
+        ob_start();
+        $myDB = DBMaker::create('dataframetest');
+        Database::clearDB();
+        $db = Database::getDB('dataframetest', '/home/mr-augustine/myConfig.ini');
+        $beforeCount = count(SensorsDB::getSensorsBy());
+        $duplicateTest = array("name" => "example_temp_sensor", "description" => "none");
+        $s1 = new Sensor($duplicateTest);
+        $duplicateSensor = SensorsDB::addSensor($s1);
+        $afterCount = count(SensorsDB::getSensorsBy());
+        
+        $this->assertGreaterThan(0, $duplicateSensor->getErrorCount() ,
+            'The returned sensor should have a sensorId error');
+        
+        $this->assertEquals($afterCount, $beforeCount,
+            'The database should not have any additional sensors after the insertion attempt');
+        ob_get_clean();
     }
     
     public function testInsertInvalidSensor() {
@@ -49,7 +64,7 @@ class SensorsDBTest extends PHPUnit_Framework_TestCase {
     }
     
     public function testInsertEmptySensor() {
-    
+        
     }
 }
 ?>
