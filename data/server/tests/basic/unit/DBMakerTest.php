@@ -1,5 +1,5 @@
 <?php
-require_once dirname(__FILE__).'/../DBMaker.class.php';
+require_once dirname(__FILE__).'/../integration/DBMaker.class.php';
 
 class DBMakerTest extends PHPUnit_Framework_TestCase {
     
