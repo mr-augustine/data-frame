@@ -4,7 +4,6 @@ class SensorsDB {
     public static function addSensor($sensor) {
         $query = "INSERT INTO Sensors (sensorName, description)
                     VALUES (:sensorName, :description)";
-        $returnId = 0;
 
         try {
             if (is_null($sensor) || $sensor->getErrorCount() > 0)
@@ -22,21 +21,21 @@ class SensorsDB {
             $statement->execute();
             $statement->closeCursor();
 
-            $returnId = $db->lastInsertId("sensorId");
+            $newSensorId = $db->lastInsertId("sensorId");
 
-            $returnUnitAssocId = SensorsDB::addSensorUnitAssoc($returnId, $units);
+            $returnUnitAssocId = SensorsDB::addSensorUnitAssoc($newSensorId, $units);
 
             if ($returnUnitAssocId == 0) {
                 // Delete the new Sensor from Sensors
-                $returnId = 0;
                 throw new PDOException("Invalid Sensor units");
             }
 
-        } catch (PDOException $e) {
-            echo "<p>Error adding sensor to Sensors ".$e->getMessage()."</p>";
+            $sensor->setSensorId($newSensorId);
+        } catch (Exception $e) {
+            $sensor->setError('sensorId', 'SENSOR_INVALID');
         }
 
-        return $returnId;
+        return $sensor;
     }
 
     public static function addSensorUnitAssoc($sensorId, $units) {
