@@ -1,13 +1,13 @@
 <?php
 // Tests the SensorsDB class
 // - CRUD operations for Sensor objects and the Sensors table
-require_once dirname(__FILE__).'/../DBMaker.class.php';
-require_once dirname(__FILE__).'/../../models/Database.class.php';
-require_once dirname(__FILE__).'/../../models/Messages.class.php';
-require_once dirname(__FILE__).'/../../models/Sensor.class.php';
-require_once dirname(__FILE__).'/../../models/Unit.class.php';
-require_once dirname(__FILE__).'/../../models/UnitsDB.class.php';
-require_once dirname(__FILE__).'/../../models/SensorsDB.class.php';
+require_once dirname(__FILE__).'/../integration/DBMaker.class.php';
+require_once dirname(__FILE__).'/../../../basic/models/Database.class.php';
+require_once dirname(__FILE__).'/../../../basic/models/Messages.class.php';
+require_once dirname(__FILE__).'/../../../basic/models/Sensor.class.php';
+require_once dirname(__FILE__).'/../../../basic/models/Unit.class.php';
+require_once dirname(__FILE__).'/../../../basic/models/UnitsDB.class.php';
+require_once dirname(__FILE__).'/../../../basic/models/SensorsDB.class.php';
 
 class SensorsDBTest extends PHPUnit_Framework_TestCase {
 

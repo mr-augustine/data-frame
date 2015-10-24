@@ -1,8 +1,8 @@
 <?php
 // Unit test for Sensor class using phpunit
-require_once dirname(__FILE__).'/../../models/Sensor.class.php';
-require_once dirname(__FILE__).'/../../models/Unit.class.php';
-require_once dirname(__FILE__).'/../../models/Messages.class.php';
+require_once dirname(__FILE__).'/../../../basic/models/Sensor.class.php';
+require_once dirname(__FILE__).'/../../../basic/models/Unit.class.php';
+require_once dirname(__FILE__).'/../../../basic/models/Messages.class.php';
 
 class SensorTest extends PHPUnit_Framework_TestCase {
 

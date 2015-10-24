@@ -1,11 +1,11 @@
 <?php
 // Tests the UnitsDB class
 // - CRUD operations for Unit objects and the Units table
-require_once dirname(__FILE__).'/../DBMaker.class.php';
-require_once dirname(__FILE__).'/../../models/Database.class.php';
-require_once dirname(__FILE__).'/../../models/Messages.class.php';
-require_once dirname(__FILE__).'/../../models/Unit.class.php';
-require_once dirname(__FILE__).'/../../models/UnitsDB.class.php';
+require_once dirname(__FILE__).'/../integration/DBMaker.class.php';
+require_once dirname(__FILE__).'/../../../basic/models/Database.class.php';
+require_once dirname(__FILE__).'/../../../basic/models/Messages.class.php';
+require_once dirname(__FILE__).'/../../../basic/models/Unit.class.php';
+require_once dirname(__FILE__).'/../../../basic/models/UnitsDB.class.php';
 
 class UnitsDBTest extends PHPUnit_Framework_TestCase {
 
