@@ -1,27 +1,21 @@
 <?php
 
 class HomeView {
+
     public static function show() {
-
-?>
-    <!DOCTYPE html>
-    <html>
-    <head>
-    <meta charset="utf-8">
-    <title>DataFrame Home Page</title>
-    </head>
-
-    <body>
-    <h1>This is the DataFrame Home Page!</h1>
-
-    <section>
-        <h2>Links</h2>
-        <a href="settings">Settings</a> 
-    </section>
-    </body>
-
-    </html>
-<?php
+        $_SESSION['headertitle'] = "DataFrame | Home";
+        MasterView::showHeader();
+        HomeView::showDetails();
+        MasterView::showFooter();
+    }
+    
+    public function showDetails() {
+        $base = (array_key_exists('base', $_SESSION)) ? $_SESSION['base'] : "";
+        
+        echo '<h1>This is the DataFrame Home Page!</h1>';
+        echo '<section>';
+        echo '<a href="settings">Settings</a>';
+        echo '</section>';
     }
 }
 ?>

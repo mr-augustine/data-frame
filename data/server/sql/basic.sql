@@ -5,7 +5,7 @@ USE basic;
 DROP TABLE if EXISTS Sensors;
 CREATE TABLE Sensors (
     sensorId        int(11) NOT NULL AUTO_INCREMENT,
-    sensorName      varchar(255) UNIQUE NOT NULL COLLATE utf8_unicode_ci,
+    name            varchar(255) UNIQUE NOT NULL COLLATE utf8_unicode_ci,
     description     varchar(255) COLLATE utf8_unicode_ci,
     dateAdded       TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     PRIMARY KEY (sensorId)
@@ -53,7 +53,8 @@ INSERT INTO Units (unitId, unitName) VALUES (2, "temperature.deg_F");
 INSERT INTO Units (unitId, unitName) VALUES (3, "pressure.mm_Hg");
 INSERT INTO Units (unitId, unitName) VALUES (4, "pressure.in_Hg");
 
-INSERT INTO Sensors (sensorId, sensorName) VALUES (1, "example_temp_sensor");
+INSERT INTO Sensors (sensorId, name, description) VALUES (1, "example_temp_sensor",
+    "This sensor does not exist.");
 
 INSERT INTO SensorUnitAssocs (unitAssocId, sensorId, unitId) VALUES (1, 1, 2);
 INSERT INTO SensorUnitAssocs (unitAssocId, sensorId, unitId) VALUES (2, 1, 4);
