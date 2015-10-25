@@ -2,8 +2,8 @@
 class SensorsDB {
 
     public static function addSensor($sensor) {
-        $query = "INSERT INTO Sensors (sensorName, description)
-                    VALUES (:sensorName, :description)";
+        $query = "INSERT INTO Sensors (name, description)
+                    VALUES (:name, :description)";
 
         try {
             if (is_null($sensor) || $sensor->getErrorCount() > 0)
@@ -16,7 +16,7 @@ class SensorsDB {
 
             $db = Database::getDB();
             $statement = $db->prepare($query);
-            $statement->bindValue(":sensorName", $sensor->getName());
+            $statement->bindValue(":name", $sensor->getName());
             $statement->bindValue(":description", $sensor->getDescription());
             $statement->execute();
             $statement->closeCursor();
@@ -85,12 +85,12 @@ class SensorsDB {
     }
 
     public static function getSensorRowsBy($type = null, $value = null, $column = null) {
-        $allowedTypes = ["sensorId", "sensorName", "description"];
+        $allowedTypes = ["sensorId", "name", "description"];
         $sensorRows = array();
         
         try {
             $db = Database::getDB();
-            $query = "SELECT sensorId, sensorName, description, dateAdded FROM Sensors";
+            $query = "SELECT sensorId, name, description, dateAdded FROM Sensors";
             
             if (!is_null($type)) {
                 if (!in_array($type, $allowedTypes))
