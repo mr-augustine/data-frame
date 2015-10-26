@@ -3,13 +3,17 @@
 
     $url = parse_url($_SERVER["REQUEST_URI"], PHP_URL_PATH);
 
-    $urlPieces = split("/", $url);
+    // Parse the url into Control, Action, and Arguments
+    list($fill, $base, $ctrl_act_args) =
+        explode('/', $url, 3) + array("", "", "");
+    list($control, $action, $arguments) =
+        explode('_', $ctrl_act_args, 3) + array("", "", "");
 
-    if (count($urlPieces) < 2)
-        $control = "none";
-    else
-        $control = $urlPieces[2];
-
+    $_SESSION['base'] = $base;
+    $_SESSION['control'] = $control;
+    $_SESSION['action'] = $action;
+    $_SESSION['arguments'] = $arguments;
+    
     switch ($control) {
         case "about":
             AboutView::show();
@@ -18,7 +22,15 @@
             HomeView::show();
             break;
         case "settings":
-            SettingsView::show();
+            if (empty($action))
+                SettingsView::show();
+            //elseif ($action == "edit") {
+            //    $sensor = Sensors::getSensorBy('name', $arguments);
+            //    $_SESSION['editSensor'] = $sensor;
+            //} elseif ($action == "add")
+            //    HomeView::show();
+            else
+                SensorAddEditView::show();
             break;
         default:
             HomeView::show();
