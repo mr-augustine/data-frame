@@ -54,6 +54,10 @@ class Sensor {
         return $this->units;
     }
 
+    public function getSensorId() {
+        return $this->sensorId;
+    }
+    
     public function setDateAdded($date) {
         $this->dateAdded = $date;
     }
