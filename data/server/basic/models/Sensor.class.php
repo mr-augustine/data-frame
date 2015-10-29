@@ -66,7 +66,7 @@ class Sensor {
         $this->sensorId = $id;
     }
 
-    public function setSensorUnits($units) {
+    public function setUnits($units) {
         $this->units = $units;
     }
     

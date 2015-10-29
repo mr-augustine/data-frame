@@ -54,7 +54,7 @@ INSERT INTO Units (unitId, unitName) VALUES (3, "pressure.mm_Hg");
 INSERT INTO Units (unitId, unitName) VALUES (4, "pressure.in_Hg");
 
 INSERT INTO Sensors (sensorId, name, description) VALUES (1, "example_temp_sensor",
-    "This sensor does not exist.");
+    "This sensor is just a test.");
 
 INSERT INTO SensorUnitAssocs (unitAssocId, sensorId, unitId) VALUES (1, 1, 2);
 INSERT INTO SensorUnitAssocs (unitAssocId, sensorId, unitId) VALUES (2, 1, 4);

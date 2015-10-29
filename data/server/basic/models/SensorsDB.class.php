@@ -78,6 +78,56 @@ class SensorsDB {
         return $returnId;
     }
 
+    public static function getSensorUnitsBy($type = null, $value = null) {
+        $sensorUnitAssocRows = SensorsDB::getSensorUnitAssocRowsBy($type, $value);
+    
+        return SensorsDB::getUnitsArray($sensorUnitAssocRows);
+    }
+    
+    private function getSensorUnitAssocRowsBy($type = null, $value = null) {
+        $allowedTypes = ["unitAssocId", "sensorId", "unitId"];
+        $sensorUnitAssocRows = array();
+        
+        try {
+            $db = Database::getDB();
+            $query = "SELECT unitAssocId, sensorId, unitId FROM SensorUnitAssocs";
+            
+            if (!is_null($type)) {
+                if (!in_array($type, $allowedTypes))
+                    throw new PDOException("$type not an allowed search criterion for SensorUnitAssocs");
+                
+                $query = $query . " WHERE ($type = :$type)";
+                $statement = $db->prepare($query);
+                $statement->bindParam(":$type", $value);
+            } else
+                $statement = $db->prepare($query);
+            $statement->execute();
+            $sensorUnitAssocRows = $statement->fetchAll(PDO::FETCH_ASSOC);
+            $statement->closeCursor();
+        } catch (Exception $e) {
+            echo "<p>Error getting sensor unit association rows by $type: ".
+                $e->getMessage()."</p>";
+        }
+        
+        return $sensorUnitAssocRows;
+    }
+    
+    private function getUnitsArray($sensorUnitAssocRows) {
+        $units = array();
+        
+        if (!empty($sensorUnitAssocRows)) {
+            foreach ($sensorUnitAssocRows as $unitAssoc) {
+                $unitsResults = UnitsDB::getUnitsBy('unitId', $unitAssoc['unitId']);
+                $unit = $unitsResults[0];
+                
+                if (!empty($unit))
+                    array_push($units, $unit);
+            }
+        }
+        
+        return $units;
+    }
+    
     public static function getSensorsBy($type = null, $value = null) {
         $sensorRows = SensorsDB::getSensorRowsBy($type, $value);
         
@@ -121,7 +171,9 @@ class SensorsDB {
                 $sensor->setSensorId($row['sensorId']);
                 
                 // TODO: Also fetch the associated units for the sensor,
-                // then set the units (setSensorUnits()) before array_push
+                // then set the units (setUnits()) before array_push
+                $units = SensorsDB::getSensorUnitsBy('sensorId', $sensor->getSensorId());
+                $sensor->setUnits($units);
                 
                 array_push($sensors, $sensor);
             }

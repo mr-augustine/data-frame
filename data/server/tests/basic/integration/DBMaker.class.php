@@ -87,7 +87,7 @@ class DBMaker {
                     VALUES (:sensorId, :sensorName, :description)";
             $st = $db->prepare($sql);
             $st->execute(array(':sensorId' => 1, ':sensorName' => "example_temp_sensor",
-                ':description' => "This sensor does not exist."));
+                ':description' => "This sensor is just a test."));
                 
             $sql = "INSERT INTO SensorUnitAssocs (unitAssocId, sensorId, unitId)
                     VALUES (:unitAssocId, :sensorId, :unitId)";
