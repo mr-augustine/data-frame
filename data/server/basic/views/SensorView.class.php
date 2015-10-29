@@ -3,7 +3,7 @@
 class SensorView {
 
     public static function show() {
-        $_SESSION['headertitle'] = "DataFrame | Sensors";
+        $_SESSION['headertitle'] = "DataFrame | Sensor Details";
         MasterView::showHeader();
         SensorView::showDetails();
         MasterView::showFooter();
@@ -31,7 +31,34 @@ class SensorView {
     }
     
     public static function showDetails() {
-    
+        $sensor = (array_key_exists('sensor', $_SESSION)) ? $_SESSION['sensor'] : null;
+        $base = (array_key_exists('base', $_SESSION)) ? $_SESSION['base'] : "";
+        
+        if (is_null($sensor))
+            echo '<p>Unknown sensor</p>';
+        else {
+            echo '<form style="display: inline" action="/'.$base.'/sensor/update/'.$sensor->getSensorId().'" method="GET">';
+            echo '<button>Edit Sensor</button>';
+            echo '</form><br><br>';
+        
+            $units = $sensor->getUnits();
+            
+            echo 'Sensor ID: '.$sensor->getSensorId().'<br>'."\n";
+            echo 'Name: '.$sensor->getName().'<br>'."\n";
+            echo 'Units: '."\n";
+            echo '<ul>';
+            foreach ($units as $unit) {
+                echo '<li>'.$unit->getUnitName().'</li>';
+            }
+            echo '</ul>';
+            echo '<br>';
+            echo 'Description:';
+            echo '<p>'.$sensor->getDescription().'</p>';
+            echo '<fieldset>'."\n";
+            echo '<legend>Status</legend>'."\n";
+            echo 'Status information goes here';
+            echo '</fieldset><br>';        
+        }
     }
     
     public static function showNew() {
