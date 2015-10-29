@@ -22,15 +22,7 @@
             HomeView::show();
             break;
         case "settings":
-            if (empty($action))
-                SettingsView::show();
-            //elseif ($action == "edit") {
-            //    $sensor = Sensors::getSensorBy('name', $arguments);
-            //    $_SESSION['editSensor'] = $sensor;
-            //} elseif ($action == "add")
-            //    HomeView::show();
-            else
-                SensorAddEditView::show();
+            SettingsView::show();
             break;
         case "sensor":
             SensorController::run();
