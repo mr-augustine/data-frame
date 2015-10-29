@@ -84,7 +84,7 @@ class SensorsDB {
         return SensorsDB::getSensorsArray($sensorRows);
     }
 
-    public static function getSensorRowsBy($type = null, $value = null, $column = null) {
+    public static function getSensorRowsBy($type = null, $value = null) {
         $allowedTypes = ["sensorId", "name", "description"];
         $sensorRows = array();
         

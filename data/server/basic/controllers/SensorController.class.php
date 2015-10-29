@@ -21,7 +21,7 @@ class SensorController {
                     $sensors = SensorsDB::getSensorsBy('sensorId', $arguments);
                     $_SESSION['sensor'] = $sensors[0];
                     
-                    self::show;
+                    self::show();
                 }
                 
                 break;
@@ -52,7 +52,7 @@ class SensorController {
         
         $_SESSION['sensor'] = $sensor;
         
-        if (is_null($sensor) || $sensor->getErrorCount != 0)
+        if (is_null($sensor) || $sensor->getErrorCount() != 0)
             SensorView::showNew();
         else {
             $newSensor = SensorsDB::addSensor($sensor);
