@@ -104,6 +104,13 @@ class Sensor {
         }
     }
 
+    public function getParameters() {
+        $paramArray = array("sensorId" => $this->sensorId, "name" => $this->name,
+            "units" => $this->units, "description" => $this->description);
+        
+        return $paramArray;
+    }
+    
     private function initialize() {
         $this->errorCount = 0;
         $this->errors = array();
@@ -153,7 +160,7 @@ class Sensor {
 
     private function validateUnits() {
         // Units is a mandatory field
-        // It/They must mach with the predefined type
+        // It/They must match with the predefined type
         $this->units = $this->extractForm('units');
 
         if (empty($this->units))
