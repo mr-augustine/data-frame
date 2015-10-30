@@ -1,4 +1,6 @@
+SENSOR_COULD_NOT_BE_UPDATED The sensor could not be update
 SENSOR_DESCRIP_TOO_LONG The sensor description is too long (limit 255 characters)
+SENSOR_DOES_NOT_EXIST A sensor with this id does not exist
 SENSOR_INVALID The sensor could not be created
 SENSOR_NAME_EMPTY The sensor name cannot be empty or only contain whitespace
 SENSOR_NAME_INVALID The sensor name is invalid (only use letters, numbers, dashes, and underscores)

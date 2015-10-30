@@ -8,6 +8,7 @@ class SensorController {
         
         switch ($action) {
             case "create":
+                $_SESSION['headertitle'] = "DataFrame | Add Sensor";
                 self::newSensor();
                 
                 break;
@@ -26,6 +27,7 @@ class SensorController {
                 
                 break;
             case "update":
+                $_SESSION['headertitle'] = "DataFrame | Update Sensor";
                 echo "Update A Sensor";
                 self::updateSensor();
                 
@@ -72,7 +74,7 @@ class SensorController {
         } 
         // User selects a link to update an existing sensor
         elseif ($_SERVER["REQUEST_METHOD"] == "GET") {
-            $_SESSION['sensors'] = $sensors;
+            $_SESSION['sensor'] = $sensors[0];
             SensorView::showUpdate();
         }
         // User makes a POST from the update form
@@ -82,7 +84,13 @@ class SensorController {
             $params['name'] = (array_key_exists('name', $_POST)) ? $_POST['name'] : "";
             $params['description'] = (array_key_exists('description', $_POST))
                 ? $_POST['description'] : "";
-                
+
+            // TODO: Include any changes to the units, iff we decide to allow this
+            // For now, just carry over the units as defined in $sensor already
+            // NOTE: The following line produces an empty array
+            //$params['units'] = (array_key_exists('units', $_POST)) ? $_POST['units'] : array();
+
+            
             $editedSensor = new Sensor($params);
             $editedSensor->setSensorId($sensor->getSensorId());
             
@@ -91,11 +99,12 @@ class SensorController {
             // If there's an error, have another go at it.
             // Otherwise, show the user the updated sensor.
             if ($updatedSensor->getErrorCount() != 0) {
-                $_SESSION['sensors'] = array($updatedSensor);
+                $_SESSION['sensor'] = $updatedSensor;
                 SensorView::showUpdate();
             } else {
+                // TODO: Doesn't seem quite right; just redirect to the showall with no args
                 $_SESSION['arguments'] = $updatedSensor->getSensorId();
-                SensorView::show();
+                SensorView::showAll();
             }
         }
     }

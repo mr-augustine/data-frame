@@ -167,19 +167,53 @@ class SensorsDB {
         
         if (!empty($rows)) {
             foreach ($rows as $row) {
+                $units = SensorsDB::getSensorUnitsBy('sensorId', $row['sensorId']);
+                $unitStrings = array();
+                
+                foreach ($units as $unit)
+                    array_push($unitStrings, $unit->getUnitName());
+                    
+                $row['units'] = $unitStrings;
+                
                 $sensor = new Sensor($row);
                 $sensor->setSensorId($row['sensorId']);
                 
-                // TODO: Also fetch the associated units for the sensor,
-                // then set the units (setUnits()) before array_push
-                $units = SensorsDB::getSensorUnitsBy('sensorId', $sensor->getSensorId());
-                $sensor->setUnits($units);
                 
                 array_push($sensors, $sensor);
             }
         }
         
         return $sensors;
+    }
+    
+    public static function updateSensor($sensor) {
+        try {
+            $db = Database::getDB();
+            
+            if (is_null($sensor) || $sensor->getErrorCount() > 0)
+                return $sensor;
+                
+            $checkSensor = SensorsDB::getSensorsBy('sensorId', $sensor->getSensorId());
+            
+            if (empty($checkSensor))
+                $sensor->setError('sensorId', 'SENSOR_DOES_NOT_EXIST');
+            if ($sensor->getErrorCount() > 0)
+                return $sensor;
+            
+            $query = "UPDATE Sensors SET name = :name, description = :description
+                    WHERE sensorId = :sensorId";
+            
+            $statement = $db->prepare($query);
+            $statement->bindValue(":name", $sensor->getName());
+            $statement->bindValue(":description", $sensor->getDescription());
+            $statement->bindValue(":sensorId", $sensor->getSensorId());
+            $statement->execute();
+            $statement->closeCursor();
+        } catch (Exception $e) {
+            $sensor->setError('sensorId', 'SENSOR_COULD_NOT_BE_UPDATED');
+        }
+        
+        return $sensor;
     }
 }
 

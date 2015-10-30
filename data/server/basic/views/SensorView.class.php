@@ -37,20 +37,24 @@ class SensorView {
         if (is_null($sensor))
             echo '<p>Unknown sensor</p>';
         else {
+            echo '<h2>Sensor Details</h2>';
             echo '<form style="display: inline" action="/'.$base.'/sensor/update/'.$sensor->getSensorId().'" method="GET">';
             echo '<button>Edit Sensor</button>';
             echo '</form><br><br>';
         
             $units = $sensor->getUnits();
             
-            echo 'Sensor ID: '.$sensor->getSensorId().'<br>'."\n";
-            echo 'Name: '.$sensor->getName().'<br>'."\n";
-            echo 'Units: '."\n";
-            echo '<ul>';
-            foreach ($units as $unit) {
-                echo '<li>'.$unit->getUnitName().'</li>';
+            echo 'Sensor ID: '.$sensor->getSensorId().'<br><br>'."\n";
+            echo 'Name: '.$sensor->getName().'<br><br>'."\n";
+            echo 'Units:<br>';
+            if (!is_null($sensor) && count($sensor->getUnits()) > 0) {
+                // Display all of the dropdown lists
+                $units = $sensor->getUnits();
+            
+                foreach ($units as $unit) {
+                    self::displayDisabledSelectedUnitDropdown($unit, 0);
+                }
             }
-            echo '</ul>';
             echo '<br>';
             echo 'Description:';
             echo '<p>'.$sensor->getDescription().'</p>';
@@ -68,12 +72,12 @@ class SensorView {
         
         echo '<h1>Add a Sensor</h1>';
         
-        echo '<form action="'.$base.'/sensor/create" method="POST">'."\n";
+        echo '<form action="/'.$base.'/sensor/create" method="POST">'."\n";
         echo 'Name: <input type="text" name="name"';
-            if (!is_null($sensor)) { echo 'value="'.$edit->getName().'" '; }
+            if (!is_null($sensor)) { echo 'value="'.$sensor->getName().'" '; }
         echo 'tabindex="1" required>'."\n";
         echo '<span class="error">';
-            if (!is_null($sensor)) { echo $edit->getError('name'); }
+            if (!is_null($sensor)) { echo $sensor->getError('name'); }
         echo '</span><br><br>'."\n";
         
         echo 'Units:<br>';
@@ -81,16 +85,19 @@ class SensorView {
         if (!is_null($sensor) && count($sensor->getUnits()) > 0) {
             // Display all of the dropdown lists
             $units = $sensor->getUnits();
+            $numUnits = count($units);
             
-            foreach ($units as $unit) {
-                displaySelectedUnitDropdown($unit);
+            for ($listIndex = 0; $listIndex < $numUnits; $listIndex++) {
+                self::displayDisabledSelectedUnitDropdown($units[$listIndex], $listIndex);            
+            //foreach ($units as $unit) {
+                //self::displaySelectedUnitDropdown($unit);
             }
         } else {
             // Display just one unselected dropdown
             self::displaySelectedUnitDropdown(null);
         }
         
-        echo '<br><br>';
+        echo '<br>'."\n";
         // Description text area
         echo 'Description:';
         echo '<br>';
@@ -103,14 +110,61 @@ class SensorView {
         echo '<a href="/'.$base.'/sensor/show/all">Cancel</a><br>';
         echo '</form>';
     }
-    
-    private function displaySelectedUnitDropdown($unit) {
+
+    public static function showUpdate() {
+        $sensor = (array_key_exists('sensor', $_SESSION)) ? $_SESSION['sensor'] : null;
+        $base = (array_key_exists('base', $_SESSION)) ? $_SESSION['base'] : "";
+        MasterView::showHeader();
+        
+        $units = $sensor->getUnits();
+        
+        echo '<h1>Edit a Sensor</h1>';
+        echo '<form action="/'.$base.'/sensor/update/'.$sensor->getSensorId().'" method="POST">'."\n";
+        echo 'Sensor ID: '.$sensor->getSensorId().'<br>'."\n";
+        echo 'Name: <input type="text" name="name"';
+            if (!is_null($sensor)) { echo 'value="'.$sensor->getName().'" '; }
+        echo 'tabindex="1" required>'."\n";
+        echo '<span class="error">';
+            if (!is_null($sensor)) { echo $sensor->getError('name'); }
+        echo '</span><br><br>'."\n";
+
+        // TODO: Add the ability to remove or add Units; consider what this would
+        // mean for measurments already in the database
+        echo 'Units:<br>';
+        if (!is_null($sensor) && count($sensor->getUnits()) > 0) {
+            // Display all of the dropdown lists
+            $units = $sensor->getUnits();
+            $numUnits = count($units);
+            
+            for ($listIndex = 0; $listIndex < $numUnits; $listIndex++) {
+                self::displayDisabledSelectedUnitDropdown($units[$listIndex], $listIndex);
+            //foreach ($units as $unit) {
+                //self::displayDisabledSelectedUnitDropdown($unit);
+            }
+        }
+        
+        echo '<br>'."\n";
+
+        echo 'Description:';
+        echo '<br>';
+        echo '<textarea name="description" maxlength="255" rows="2" cols="80">';
+        echo $sensor->getDescription();
+        echo '</textarea>';
+        
+        // Submit button and cancel link
+        echo '<p><input type="submit" name="submit" value="Submit">';
+        echo '&nbsp&nbsp';
+        echo '<a href="/'.$base.'/sensor/show/all">Cancel</a><br>';
+        echo '</form>';
+    }
+        
+    private function displaySelectedUnitDropdown($unit, $order) {
         $validUnits = Unit::$UNITS;        
         
-        echo '<select name="units[]">'."\n";
+        echo '<select name="units['.$order.']">'."\n";
         
         if (!is_null($unit)) {
-            echo '<option value=""> </option>'."\n";
+            echo '<option value=" "> </option>'."\n";
             
             foreach ($validUnits as $validUnit) {
                 echo '<option ';
@@ -127,12 +181,33 @@ class SensorView {
             }
         }
         
-        echo '</select>';
+        echo '</select><br>'."\n";
     }
     
-    
-    public static function showUpdate() {
-    
+    private function displayDisabledSelectedUnitDropdown($unit, $order) {
+        $validUnits = Unit::$UNITS;        
+        
+        echo '<select name="units['.$order.']" disabled>'."\n";
+        
+        if (!is_null($unit)) {
+            echo '<option value=" "> </option>'."\n";
+            
+            foreach ($validUnits as $validUnit) {
+                echo '<option ';
+                
+                if ($unit == $validUnit) { echo 'selected="selected" '; }
+                
+                echo 'value="'.$validUnit.'">'.$validUnit.'</option>'."\n";
+            }
+        } else {
+            echo '<option selected="selected" value=""> </option>'."\n";
+            
+            foreach ($validUnits as $validUnit) {
+                echo '<option value="'.$validUnit.'">'.$validUnit.'</option>'."\n";
+            }
+        }
+        
+        echo '</select><br>'."\n";
     }
 }
 
