@@ -47,14 +47,11 @@ class SensorView {
             echo 'Sensor ID: '.$sensor->getSensorId().'<br><br>'."\n";
             echo 'Name: '.$sensor->getName().'<br><br>'."\n";
             echo 'Units:<br>';
-            if (!is_null($sensor) && count($sensor->getUnits()) > 0) {
-                // Display all of the dropdown lists
-                $units = $sensor->getUnits();
-            
+            echo '<ul>';
                 foreach ($units as $unit) {
-                    self::displayDisabledSelectedUnitDropdown($unit, 0);
+                    echo '<li>'.$unit.'</li>';
                 }
-            }
+            echo '</ul>';
             echo '<br>';
             echo 'Description:';
             echo '<p>'.$sensor->getDescription().'</p>';
