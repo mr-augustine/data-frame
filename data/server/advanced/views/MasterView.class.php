@@ -42,7 +42,7 @@ class MasterView {
 		echo '<span class="icon-bar"></span>';
 		echo '</button>';
 		
-		echo '<a class="navbar-brand" href="/'.$base.'/">Sensor Data Repo</a>';
+		echo '<a class="navbar-brand" href="/'.$base.'/">DataFrame</a>';
 		echo '</div>'; // navbar-header
 		
 		echo '<div id="navbar" class="navbar-collapse collapse">';
@@ -91,7 +91,7 @@ class MasterView {
 		echo '<footer>';
 		
 		echo '<ul>';
-		echo '<li>&copy; 2015 Sensor Data Repo</li>';
+		echo '<li>&copy; 2015 DataFrame</li>';
 		echo '<li><a href="/'.$base.'/terms.html">Terms</a></li>';
 		echo '<li><a href="/'.$base.'/privacy.html">Privacy</a></li>';
 		echo '<li><a href="/'.$base.'/help.html">Help</a></li>';
