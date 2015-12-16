@@ -9,7 +9,7 @@ class Database {
 	
 	// Returns a reference to the database connection, if successful.
 	// Throws an exception otherwise.
-	public static function getDB($dbName = 'advanced_db', $configPath = null) {
+	public static function getDB($dbName = 'advanceddb', $configPath = null) {
 		
 		if (!isset (self::$db) || self::$db == null) {
 			try {
