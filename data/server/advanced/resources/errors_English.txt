@@ -36,6 +36,7 @@ MEASUREMENT_VALUE_INVALID_RATE The rate value must be numeric
 MEASUREMENT_VALUE_INVALID_TEMPERATURE The temperature value must be numeric
 PASSWORD_EMPTY The password cannot be empty
 PASSWORD_INVALID_CHARS The password contains invalid characters
+PASSWORD_TOO_LONG The password must be no more than 32 characters long
 PASSWORD_TOO_SHORT The password must be at least 8 characters long
 SENSOR_COULD_NOT_BE_UPDATED The sensor could not be updated
 SENSOR_DESCRIPTION_TOO_LONG The sensor description is too long
@@ -59,4 +60,5 @@ USER_INVALID User could not be created
 USERNAME_EMPTY The username cannot be empty
 USERNAME_INVALID_CHARS The username contains invalid characters
 USERNAME_PASSWORD_COMBO_INVALID Your username or password is incorrect
-USERNAME_TOO_SHORT The username is too short
+USERNAME_TOO_LONG The username must be no more than 16 characters long 
+USERNAME_TOO_SHORT The username must be at least 6 characters long

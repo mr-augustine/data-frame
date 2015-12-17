@@ -1,11 +1,11 @@
 <?php
 include_once("Messages.class.php");
 
-// TODO: Add a maximum password length and add to the password validation
-// TODO: Add a maximum username length and add to the username validation
 class User {
 	private static $MIN_PASSWORD_LENGTH = 8;
-	private static $MIN_USERNAME_LENGTH = 6;
+    private static $MAX_PASSWORD_LENGTH = 32;
+    private static $MIN_USERNAME_LENGTH = 6;
+    private static $MAX_USERNAME_LENGTH = 16;
 	
 	private $errorCount;
 	private $errors;
@@ -119,6 +119,9 @@ class User {
 		// Meets minimum length
 		else if (strlen($this->username) < self::$MIN_USERNAME_LENGTH)
 			$this->setError('username', 'USERNAME_TOO_SHORT');
+        // Does not exceed maximum length
+        else if (strlen($this->username) > self::$MAX_USERNAME_LENGTH)
+            $this->setError('username', 'USERNAME_TOO_LONG');
 		// Only valid chars {letters, numbers, dashes, underscores, periods}
 		else if (!filter_var($this->username, FILTER_VALIDATE_REGEXP,
 				array('options' => array('regexp' => "/^([a-zA-Z0-9\-\_.])+$/i")) )) {
@@ -133,12 +136,15 @@ class User {
 		if (empty($this->password))
 			$this->setError('password', 'PASSWORD_EMPTY');
 		
-		// Hashed password (retrieved from database)
+		// Don't continue validation if it's a hashed password (i.e., retrieved from database)
 		else if (self::passwordIsHashed($this->password))
 			return;
 		// Meets minimum length
 		else if (strlen($this->password) < self::$MIN_PASSWORD_LENGTH)
 			$this->setError('password', 'PASSWORD_TOO_SHORT');
+		// Does not exceed maximum length
+		else if (strlen($this->password) > self::$MAX_PASSWORD_LENGTH)
+			$this->setError('password', 'PASSWORD_TOO_LONG');
 		// Only valid chars {letters, numbers, dashes, underscores, periods}
 		else if (!filter_var($this->password, FILTER_VALIDATE_REGEXP,
 				array('options' => array('regexp' => "/^([a-zA-Z0-9\-\_.!@#$%^&*<>?:;|+=])+$/i")))) {
@@ -147,9 +153,10 @@ class User {
 	}
 	
 	private function passwordIsHashed($password) {
-		$hashStart = '$2y$10$';
+		$hashPrefix = '$2y$10$';
 		
-		return (strpos($password, $hashStart) === 0);
+        // Use '===' since we're verifying a match at index '0'
+		return (strpos($password, $hashPrefix) === 0);
 	}
 }
 ?>
