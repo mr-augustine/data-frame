@@ -145,5 +145,26 @@ class UsersDBTest extends PHPUnit_Framework_TestCase {
 		$this->assertTrue(empty($updatedUser->getErrors()),
 				'The updated user should have no errors');
 	}
+
+    public function testDeleteExistingUser() {
+        $myDb = DBMaker::create('dataframetest');
+        Database::clearDB();
+        $db = Database::getDB('dataframetest', '/opt/lampp/myConfig.ini');
+
+        $testUserId = 1;
+        $users = UsersDB::getUsersBy('user_id', $testUserId);
+        $existingUser = $users[0];
+
+        $beforeCount = UsersDB::getUsersBy();
+        $deletedUser = UsersDB::deleteUser($existingUser);
+        $afterCount = UsersDB::getUsersBy();
+
+        $this->assertEquals($afterCount, $beforeCount - 1,
+            'The database should have one less user in the Users table');
+    }
+
+    public function testDeleteNonExistentUser() {
+
+    }
 }
 ?>
