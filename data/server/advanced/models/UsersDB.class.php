@@ -27,6 +27,26 @@ class UsersDB {
 		return $user;
 	}
 	
+    // Deletes a User from the database. Returns the User unchanged
+    // if successful. Returns the User with a user_id error if there
+    // is a database issue.
+    public static function deleteUser($user) {
+        try {
+            if (is_null($user) || $user->getErrorCount() > 0)
+                return $user;
+
+            $db = Database::getDB();
+            $deleteQuery = "DELETE from Users WHERE userId = :userId";
+            $statement = $db->prepare($deleteQuery);
+            $statement->bindValue(":userId", $user->getUserId());
+            $statement->execute();
+            $statement->closeCursor();
+        } catch (Exception $e) {
+            $user->setError('user_id', 'USER_COULD_NOT_BE_DELETED');
+        }
+
+        return $user;
+    }
 	// Returns an array of the rows from the Users table whose $type
 	// field has value $value. Throws an exception if unsuccessful.
 	public static function getUserRowsBy($type = null, $value = null) {
