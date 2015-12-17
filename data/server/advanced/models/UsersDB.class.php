@@ -29,16 +29,17 @@ class UsersDB {
 	
     // Deletes a User from the database. Returns the User unchanged
     // if successful. Returns the User with a user_id error if there
-    // is a database issue.
+    // is a database issue. This function assumes that the specified
+    // user does has no associated datasets, sensors, or measurements.
     public static function deleteUser($user) {
         try {
             if (is_null($user) || $user->getErrorCount() > 0)
                 return $user;
 
             $db = Database::getDB();
-            $deleteQuery = "DELETE from Users WHERE userId = :userId";
+            $deleteQuery = 'DELETE from Users WHERE user_id = :user_id';
             $statement = $db->prepare($deleteQuery);
-            $statement->bindValue(":userId", $user->getUserId());
+            $statement->bindValue(':user_id', $user->getUserId());
             $statement->execute();
             $statement->closeCursor();
         } catch (Exception $e) {
@@ -47,6 +48,7 @@ class UsersDB {
 
         return $user;
     }
+
 	// Returns an array of the rows from the Users table whose $type
 	// field has value $value. Throws an exception if unsuccessful.
 	public static function getUserRowsBy($type = null, $value = null) {

@@ -1,16 +1,16 @@
 <?php
-require_once dirname(__FILE__).'\..\..\WebContent\models\Database.class.php';
-require_once dirname(__FILE__).'\..\..\WebContent\models\Messages.class.php';
-require_once dirname(__FILE__).'\..\..\WebContent\models\User.class.php';
-require_once dirname(__FILE__).'\..\..\WebContent\models\UsersDB.class.php';
-require_once dirname(__FILE__).'\..\..\WebContent\tests\DBMaker.class.php';
+require_once dirname(__FILE__).'/../../../../advanced/models/Database.class.php';
+require_once dirname(__FILE__).'/../../../../advanced/models/Messages.class.php';
+require_once dirname(__FILE__).'/../../../../advanced/models/User.class.php';
+require_once dirname(__FILE__).'/../../../../advanced/models/UsersDB.class.php';
+require_once dirname(__FILE__).'/../../integration/DBMaker.class.php';
 
 class UsersDBTest extends PHPUnit_Framework_TestCase {
 	
 	public function testGetAllUsers() {
-		$myDb = DBMaker::create('sensordatarepotest');
+		$myDb = DBMaker::create('dataframetest');
 		Database::clearDB();
-		$db = Database::getDB('sensordatarepotest', 'C:\xampp\myConfig.ini');
+		$db = Database::getDB('dataframetest', '/home/mr-augustine/myConfig.ini');
 		$users = UsersDB::getUsersBy();
 		
 		$this->assertEquals(8, count($users),
@@ -22,9 +22,9 @@ class UsersDBTest extends PHPUnit_Framework_TestCase {
 	}
 	
 	public function testInsertValidUser() {
-		$myDb = DBMaker::create('sensordatarepotest');
+		$myDb = DBMaker::create('dataframetest');
 		Database::clearDB();
-		$db = Database::getDB('sensordatarepotest', 'C:\xampp\myConfig.ini');
+		$db = Database::getDB('dataframetest', '/home/mr-augustine/myConfig.ini');
 		
 		$validTest = array('username' => 'valid-user', 'password' => '22222222');
 		$s1 = new User($validTest);
@@ -41,9 +41,9 @@ class UsersDBTest extends PHPUnit_Framework_TestCase {
 	}
 	
 	public function testInsertInvalidUser() {
-		$myDb = DBMaker::create('sensordatarepotest');
+		$myDb = DBMaker::create('dataframetest');
 		Database::clearDB();
-		$db = Database::getDB('sensordatarepotest', 'C:\xampp\myConfig.ini');
+		$db = Database::getDB('dataframetest', '/home/mr-augustine/myConfig.ini');
 		
 		$beforeCount = count(UsersDB::getUsersBy());
 		$invalidTest = array('username' => '', 'password' => 'yyyyyyyy');
@@ -60,9 +60,9 @@ class UsersDBTest extends PHPUnit_Framework_TestCase {
 	
 	public function testInsertDuplicateUser() {
 		ob_start();
-		$myDb = DBMaker::create('sensordatarepotest');
+		$myDb = DBMaker::create('dataframetest');
 		Database::clearDB();
-		$db = Database::getDB('sensordatarepotest', 'C:\xampp\myConfig.ini');
+		$db = Database::getDB('dataframetest', '/home/mr-augustine/myConfig.ini');
 		
 		$beforeCount = count(UsersDB::getUsersBy());
 		$duplicateTest = array('username' => 'mwatney', 'password' => 'validpassword');
@@ -79,9 +79,9 @@ class UsersDBTest extends PHPUnit_Framework_TestCase {
 	}
 	
 	public function testGetUsersByUsername() {
-		$myDb = DBMaker::create('sensordatarepotest');
+		$myDb = DBMaker::create('dataframetest');
 		Database::clearDB();
-		$db = Database::getDB('sensordatarepotest', 'C:\xampp\myConfig.ini');
+		$db = Database::getDB('dataframetest', '/home/mr-augustine/myConfig.ini');
 		
 		$testUsername = 'mwatney';
 		$users = UsersDB::getUsersBy('username', $testUsername);
@@ -95,9 +95,9 @@ class UsersDBTest extends PHPUnit_Framework_TestCase {
 	}
 	
 	public function testGetUsersByUserId() {
-		$myDb = DBMaker::create('sensordatarepotest');
+		$myDb = DBMaker::create('dataframetest');
 		Database::clearDB();
-		$db = Database::getDB('sensordatarepotest', 'C:\xampp\myConfig.ini');
+		$db = Database::getDB('dataframetest', '/home/mr-augustine/myConfig.ini');
 		
 		$testUserId = 2;
 		$users = UsersDB::getUsersBy('user_id', $testUserId);
@@ -111,9 +111,9 @@ class UsersDBTest extends PHPUnit_Framework_TestCase {
 	}
 	
 	public function testGetNonexistentUserByUserId() {
-		$myDb = DBMaker::create('sensordatarepotest');
+		$myDb = DBMaker::create('dataframetest');
 		Database::clearDB();
-		$db = Database::getDB('sensordatarepotest', 'C:\xampp\myConfig.ini');
+		$db = Database::getDB('dataframetest', '/home/mr-augustine/myConfig.ini');
 		
 		$testUserId = 0;
 		$users = UsersDB::getUsersBy('user_id', $testUserId);
@@ -123,9 +123,9 @@ class UsersDBTest extends PHPUnit_Framework_TestCase {
 	}
 	
 	public function testUpdateUsername() {
-		$myDb = DBMaker::create('sensordatarepotest');
+		$myDb = DBMaker::create('dataframetest');
 		Database::clearDB();
-		$db = Database::getDB('sensordatarepotest', 'C:\xampp\myConfig.ini');
+		$db = Database::getDB('dataframetest', '/home/mr-augustine/myConfig.ini');
 		$testUserId = 1;
 		$users = UsersDB::getUsersBy('user_id', $testUserId);
 		$user = $users[0];
@@ -149,17 +149,19 @@ class UsersDBTest extends PHPUnit_Framework_TestCase {
     public function testDeleteExistingUser() {
         $myDb = DBMaker::create('dataframetest');
         Database::clearDB();
-        $db = Database::getDB('dataframetest', '/opt/lampp/myConfig.ini');
+        $db = Database::getDB('dataframetest', '/home/mr-augustine/myConfig.ini');
 
-        $testUserId = 1;
+        $testUserId = 8;
         $users = UsersDB::getUsersBy('user_id', $testUserId);
         $existingUser = $users[0];
 
-        $beforeCount = UsersDB::getUsersBy();
+        $beforeCount = count(UsersDB::getUsersBy());
         $deletedUser = UsersDB::deleteUser($existingUser);
-        $afterCount = UsersDB::getUsersBy();
+        $afterCount = count(UsersDB::getUsersBy());
 
-        $this->assertEquals($afterCount, $beforeCount - 1,
+        $this->assertEquals(0, count($deletedUser->getErrors()),
+            'The deleted user should be error-free');
+        $this->assertEquals($beforeCount - 1, $afterCount,
             'The database should have one less user in the Users table');
     }
 
