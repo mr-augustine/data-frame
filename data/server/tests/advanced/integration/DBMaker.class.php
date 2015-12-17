@@ -9,8 +9,8 @@ class DBMaker {
 		
 		try {
 			$dbspec = 'mysql:host=localhost;dbname=' . "". ";charset=utf8";
-			$username = 'root';
-			$password = '';
+			$username = 'dataframe';
+			$password = 'dataframe';
 			$options = array (
 					PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION
 			);
