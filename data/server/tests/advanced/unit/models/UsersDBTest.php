@@ -40,7 +40,7 @@ class UsersDBTest extends PHPUnit_Framework_TestCase {
 				'The database should have one more user after insertion');
 	}
 	
-	public function testInsertInvalidUser() {
+	public function testInsertInvalidUserEmptyUsername() {
 		$myDb = DBMaker::create('dataframetest');
 		Database::clearDB();
 		$db = Database::getDB('dataframetest', '/home/mr-augustine/myConfig.ini');
