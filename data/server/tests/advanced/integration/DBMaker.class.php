@@ -40,11 +40,12 @@ class DBMaker {
 			$st = $db->prepare("CREATE TABLE Datasets (
     			dataset_id      int(11) NOT NULL AUTO_INCREMENT,
 				user_id         int(11) NOT NULL,
-				dataset_name    varchar(32) UNIQUE NOT NULL COLLATE utf8_unicode_ci,
+				dataset_name    varchar(32) NOT NULL COLLATE utf8_unicode_ci,
     			description     varchar(255) COLLATE utf8_unicode_ci,
     			date_created    TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     			PRIMARY KEY (dataset_id),
-				FOREIGN KEY (user_id) REFERENCES Users(user_id)
+				FOREIGN KEY (user_id) REFERENCES Users(user_id),
+                CONSTRAINT dn_uid UNIQUE (dataset_name, user_id)
 			)ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci");
 			$st->execute();
 			
@@ -97,7 +98,7 @@ class DBMaker {
 			$sql = "INSERT INTO Datasets (dataset_id, user_id, dataset_name, description)
 					VALUES (:dataset_id, :user_id, :dataset_name, :description)";
 			$st = $db->prepare($sql);
-			$st->execute(array(':dataset_id' => 1, ':user_id' => 1, ':dataset_name' => 'Lincoln Park Run', ':description' => ''));
+			$st->execute(array(':dataset_id' => 1, ':user_id' => 1, ':dataset_name' => 'Lincoln Park Run', ':description' => 'Lovely day for a walk with my robot'));
 			
 			
 			// Populate the Sensors table

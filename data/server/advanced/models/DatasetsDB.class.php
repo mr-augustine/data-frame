@@ -15,9 +15,9 @@ class DatasetsDB {
 			
 			$db = Database::getDB();
 			$statement = $db->prepare($query);
-			$statement->bindValue(':user_id', $dataset->getUserId());
-			$statement->bindValue(':dataset_name', $dataset->getDatasetName());
-			$statement->bindValue(':description', $dataset->getDescription());
+            $statement->bindValue(':user_id', $dataset->getUserId());
+            $statement->bindValue(':dataset_name', $dataset->getDatasetName());
+            $statement->bindValue(':description', $dataset->getDescription());
 			$statement->execute();
 			$statement->closeCursor();
 			
@@ -32,6 +32,29 @@ class DatasetsDB {
 		
 		return $dataset;
 	}
+	
+    // Deletes a Dataset from the database. Returns the Dataset unchanged
+    // if successful. Returns the Dataset with a dataset_id error if there
+    // is a database issue. This function assumes that the specified
+    // dataset does has no associated sensors, or measurements.
+    public static function deleteDataset($dataset) {
+        try {
+            if (is_null($dataset) || $dataset->getErrorCount() > 0)
+                return $dataset;
+
+            $db = Database::getDB();
+            $deleteQuery = "DELETE from Datasets WHERE dataset_id = :dataset_id";
+            $statement = $db->prepare($deleteQuery);
+            $statement->bindValue(':dataset_id', $dataset->getDatasetId());
+            $statement->execute();
+            $statement->closeCursor();
+        } catch (Exception $e) {
+            $dataset->setError('dataset_id', 'DATASET_COULD_NOT_BE_DELETED');
+            print($e->getMessage());
+        }
+
+        return $dataset;
+    }
 
 	// Returns an array of Datasets that meet the criteria specified.
 	// If unsuccessful, this function returns an empty array.

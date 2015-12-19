@@ -1,4 +1,5 @@
 DATASET_DESCRIPTION_TOO_LONG The dataset description is too long
+DATASET_COULD_NOT_BE_DELETED The dataset could not be deleted
 DATASET_COULD_NOT_BE_UPDATED The dataset could not be updated
 DATASET_DOES_NOT_EXIST The dataset with the specified id does not exist
 DATASET_ID_EMPTY The dataset id cannot be empty
