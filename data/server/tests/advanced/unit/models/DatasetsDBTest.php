@@ -1,16 +1,18 @@
 <?php
-require_once dirname(__FILE__).'\..\..\WebContent\models\Database.class.php';
-require_once dirname(__FILE__).'\..\..\WebContent\models\Messages.class.php';
-require_once dirname(__FILE__).'\..\..\WebContent\tests\DBMaker.class.php';
-require_once dirname(__FILE__).'\..\..\WebContent\models\DatasetsDB.class.php';
-require_once dirname(__FILE__).'\..\..\WebContent\models\Dataset.class.php';
+require_once dirname(__FILE__).'/../../../../advanced/models/Database.class.php';
+require_once dirname(__FILE__).'/../../../../advanced/models/Messages.class.php';
+require_once dirname(__FILE__).'/../../../../advanced/models/DatasetsDB.class.php';
+require_once dirname(__FILE__).'/../../../../advanced/models/Dataset.class.php';
+require_once dirname(__FILE__).'/../../../../advanced/models/UsersDB.class.php';
+require_once dirname(__FILE__).'/../../../../advanced/models/User.class.php';
+require_once dirname(__FILE__).'/../../integration/DBMaker.class.php';
 
 class DatasetsDBTest extends PHPUnit_Framework_TestCase {
 	
 	public function testGetAllDatasets() {
-		$myDb = DBMaker::create('sensordatarepotest');
+		$myDb = DBMaker::create('dataframetest');
 		Database::clearDB();
-		$db = Database::getDB('sensordatarepotest', 'C:\xampp\myConfig.ini');
+		$db = Database::getDB('dataframetest', '/home/mr-augustine/myConfig.ini');
 		
 		$datasets = DatasetsDB::getDatasetsBy();
 		
@@ -23,9 +25,9 @@ class DatasetsDBTest extends PHPUnit_Framework_TestCase {
 	}
 	
 	public function testInsertValidDataset() {
-		$myDb = DBMaker::create('sensordatarepotest');
+		$myDb = DBMaker::create('dataframetest');
 		Database::clearDB();
-		$db = Database::getDB('sensordatarepotest', 'C:\xampp\myConfig.ini');
+		$db = Database::getDB('dataframetest', '/home/mr-augustine/myConfig.ini');
 		
 		$validTest = array('user_id' => 1, 'dataset_name' => 'Franklin Park Run',
 				'description' => 'A walk in the park with my robot');
@@ -33,7 +35,6 @@ class DatasetsDBTest extends PHPUnit_Framework_TestCase {
 		
 		$beforeCount = count(DatasetsDB::getDatasetsBy());
 		$newDataset = DatasetsDB::addDataset($validDataset);
-		
 		$this->assertEquals(0, $newDataset->getErrorCount(),
 				'The inserted dataset should be error-free');
 
@@ -43,9 +44,9 @@ class DatasetsDBTest extends PHPUnit_Framework_TestCase {
 	}
 	
 	public function testInsertInvalidDataset() {
-		$myDb = DBMaker::create('sensordatarepotest');
+		$myDb = DBMaker::create('dataframetest');
 		Database::clearDB();
-		$db = Database::getDB('sensordatarepotest', 'C:\xampp\myConfig.ini');
+		$db = Database::getDB('dataframetest', '/home/mr-augustine/myConfig.ini');
 		
 		$invalidTest = array('user_id' => 1, 'dataset_name' => '',
 				'description' => 'A walk in the park with my robot');
@@ -63,9 +64,9 @@ class DatasetsDBTest extends PHPUnit_Framework_TestCase {
 	}
 	
 	public function testInsertDuplicateDataset() {
-		$myDb = DBMaker::create('sensordatarepotest');
+		$myDb = DBMaker::create('dataframetest');
 		Database::clearDB();
-		$db = Database::getDB('sensordatarepotest', 'C:\xampp\myConfig.ini');
+		$db = Database::getDB('dataframetest', '/home/mr-augustine/myConfig.ini');
 		
 		$duplicateTest = array('user_id' => 1, 'dataset_name' => 'Lincoln Park Run');
 		$duplicateDataset = new Dataset($duplicateTest);
@@ -82,9 +83,9 @@ class DatasetsDBTest extends PHPUnit_Framework_TestCase {
 	}
 	
 	public function testGetDatasetByUserId() {
-		$myDb = DBMaker::create('sensordatarepotest');
+		$myDb = DBMaker::create('dataframetest');
 		Database::clearDB();
-		$db = Database::getDB('sensordatarepotest', 'C:\xampp\myConfig.ini');
+		$db = Database::getDB('dataframetest', '/home/mr-augustine/myConfig.ini');
 		$testUserId = 1;
 		$datasets = DatasetsDB::getDatasetsBy('user_id', $testUserId);
 		
@@ -97,9 +98,9 @@ class DatasetsDBTest extends PHPUnit_Framework_TestCase {
 	}
 	
 	public function testGetDatasetByDatasetId() {
-		$myDb = DBMaker::create('sensordatarepotest');
+		$myDb = DBMaker::create('dataframetest');
 		Database::clearDB();
-		$db = Database::getDB('sensordatarepotest', 'C:\xampp\myConfig.ini');
+		$db = Database::getDB('dataframetest', '/home/mr-augustine/myConfig.ini');
 		$testDatasetId = 1;
 		$datasets = DatasetsDB::getDatasetsBy('dataset_id', $testDatasetId);
 		
@@ -112,9 +113,9 @@ class DatasetsDBTest extends PHPUnit_Framework_TestCase {
 	}
 	
 	public function testGetDatasetByDatasetName() {
-		$myDb = DBMaker::create('sensordatarepotest');
+		$myDb = DBMaker::create('dataframetest');
 		Database::clearDB();
-		$db = Database::getDB('sensordatarepotest', 'C:\xampp\myConfig.ini');
+		$db = Database::getDB('dataframetest', '/home/mr-augustine/myConfig.ini');
 		$testDatasetName = 'Lincoln Park Run';
 		$datasets = DatasetsDB::getDatasetsBy('dataset_name', $testDatasetName);
 		
@@ -127,9 +128,9 @@ class DatasetsDBTest extends PHPUnit_Framework_TestCase {
 	}
 	
 	public function testUpdateDatasetName() {
-		$myDb = DBMaker::create('sensordatarepotest');
+		$myDb = DBMaker::create('dataframetest');
 		Database::clearDB();
-		$db = Database::getDB('sensordatarepotest', 'C:\xampp\myConfig.ini');
+		$db = Database::getDB('dataframetest', '/home/mr-augustine/myConfig.ini');
 		$testDatasetId = 1;
 		
 		$datasets = DatasetsDB::getDatasetsBy('dataset_id', $testDatasetId);
@@ -152,26 +153,49 @@ class DatasetsDBTest extends PHPUnit_Framework_TestCase {
 	}
 	
 	public function testUpdateDatasetDescription() {
-		$myDb = DBMaker::create('sensordatarepotest');
+		$myDb = DBMaker::create('dataframetest');
 		Database::clearDB();
-		$db = Database::getDB('sensordatarepotest', 'C:\xampp\myConfig.ini');
+		$db = Database::getDB('dataframetest', '/home/mr-augustine/myConfig.ini');
 		$testDatasetId = 1;
 		
 		$datasets = DatasetsDB::getDatasetsBy('dataset_id', $testDatasetId);
 		$dataset = $datasets[0];
 		
-		$this->assertTrue(empty($dataset->getDescription()),
-				'Before the update, it should have an empty description');
-		
 		$params = $dataset->getParameters();
-		$params['description'] = 'Updated description';
+        $originalDescription = $params['description'];
+		$params['description'] = 'Updated description '.$originalDescription;
 		$newDataset = new Dataset($params);
 		$newDataset->setDatasetId($testDatasetId);
 		
 		$returnedDataset = DatasetsDB::updateDataset($newDataset);
 		
-		$this->assertEquals($returnedDataset->getDescription(), $params['description'],
-				'After the update it should have the name '.$params['description']);
+        $this->assertEquals(0, $returnedDataset->getErrorCount(),
+                'The updated dataset should be error-free');
+        $this->assertTrue(strcmp($originalDescription, $returnedDataset->getDescription()) != 0,
+                'The original description and the old description should be different');
 	}
+
+    public function testDeleteExistingDataset() {
+        $myDb = DBMaker::create('dataframetest');
+        Database::clearDB();
+        $db = Database::getDB('dataframetest', '/home/mr-augustine/myConfig.ini');
+
+        $testDatasetId = 1;
+        $datasets = DatasetsDB::getDatasetsBy('dataset_id', $testDatasetId);
+        $existingDataset = $datasets[0];
+
+        $beforeCount = count(DatasetsDB::getDatasetsBy());
+        $deletedDataset = DatasetsDB::deleteDataset($existingDataset);
+        $afterCount = count(DatasetsDB::getDatasetsBy());
+        print_r($deletedDataset->getErrors());
+        $this->assertEquals(0, $deletedDataset->getErrorCount(),
+            'The deleted dataset should be error-free');
+        $this->assertEquals($beforeCount - 1, $afterCount,
+            'The database should have one less dataset in the Datasets table');
+    }
+
+    public function testDeleteNonexistentDataset() {
+
+    }
 }
 ?>
