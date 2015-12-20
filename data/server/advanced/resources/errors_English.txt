@@ -56,6 +56,11 @@ SENSOR_TYPE_NAME_EMPTY The sensor type name cannot be empty
 SENSOR_TYPE_NAME_INVALID_CHARS The sensor type name contains invalid characters
 SENSOR_TYPE_NAME_TOO_LONG The sensor type name is too long
 SENSOR_TYPE_NAME_TOO_SHORT The sensor type name is too short
+SENSOR_UNIT_DESCRIPTION_TOO_LONG The sensor unit description is too long
+SENSOR_UNIT_NAME_EMPTY The sensor unit name cannot be empty
+SENSOR_UNIT_NAME_INVALID_CHARS The sensor unit name contains invalid characters
+SENSOR_UNIT_NAME_TOO_LONG The sensor unit name is too long
+SENSOR_UNIT_NAME_TOO_SHORT The sensor unit name is too short
 SENSOR_UNITS_EMPTY The sensor units cannot be empty
 SENSOR_UNITS_INVALID The sensor units are invalid
 USER_COULD_NOT_BE_DELETED The user could not be deleted
