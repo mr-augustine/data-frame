@@ -49,7 +49,7 @@ class SensorTypesDBTest extends PHPUnit_Framework_TestCase {
 		$db = Database::getDB('dataframetest', '/home/mr-augustine/myConfig.ini');
 		
 		$invalidTest = array('sensor_type_id' => 1,
-			'sensor_name' => '',
+			'sensor_type_name' => '',
 			'description' => 'Blank sensor type name');
 		$invalidSensorType = new SensorType($invalidTest);
 		
