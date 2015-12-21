@@ -39,7 +39,7 @@ CREATE TABLE Sensors (
 DROP TABLE if EXISTS SensorTypes;
 CREATE TABLE SensorTypes (
     sensor_type_id      int(11) NOT NULL AUTO_INCREMENT,
-    sensor_type_name    varchar(32) NOT NULL COLLATE utf8_unicode_ci,
+    sensor_type_name    varchar(32) NOT NULL UNIQUE COLLATE utf8_unicode_ci,
     description         varchar(128) COLLATE utf8_unicode_ci,
     PRIMARY KEY (sensor_type_id)
 )ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
@@ -84,6 +84,13 @@ INSERT INTO Sensors (sensor_id, dataset_id, sensor_name, sensor_type, sensor_uni
 INSERT INTO Sensors (sensor_id, dataset_id, sensor_name, sensor_type, sensor_units, sequence_type, description) VALUES
     (3, 1, 'bump0', 'BINARY', 'ON-OFF', 'SEQUENTIAL', "The robot's only bump switch. Placed at the front/center.");
     
+INSERT INTO SensorTypes (sensor_type_id, sensor_type_name, description) VALUES
+    (1, 'DISTANCE', 'A count of how far something has traveled');
+INSERT INTO SensorTypes (sensor_type_id, sensor_type_name, description) VALUES
+    (2, 'RANGE', 'Measures how far away an object is');
+INSERT INTO SensorTypes (sensor_type_id, sensor_type_name, description) VALUES
+    (3, 'IMAGING', 'Represents a 2D picture of something');
+
 INSERT INTO Measurements (measurement_id, measurement_index, measurement_value, measurement_timestamp, sensor_id) VALUES
     (1, 1, '45.2', NULL, 1);
 INSERT INTO Measurements (measurement_id, measurement_index, measurement_value, measurement_timestamp, sensor_id) VALUES
