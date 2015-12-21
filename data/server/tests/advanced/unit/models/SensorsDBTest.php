@@ -1,16 +1,16 @@
 <?php
-require_once dirname(__FILE__).'\..\..\WebContent\models\Database.class.php';
-require_once dirname(__FILE__).'\..\..\WebContent\models\Messages.class.php';
-require_once dirname(__FILE__).'\..\..\WebContent\tests\DBMaker.class.php';
-require_once dirname(__FILE__).'\..\..\WebContent\models\SensorsDB.class.php';
-require_once dirname(__FILE__).'\..\..\WebContent\models\Sensor.class.php';
+require_once dirname(__FILE__).'/../../../../advanced/models/Database.class.php';
+require_once dirname(__FILE__).'/../../../../advanced/models/Messages.class.php';
+require_once dirname(__FILE__).'/../../../../advanced/models/SensorsDB.class.php';
+require_once dirname(__FILE__).'/../../../../advanced/models/Sensor.class.php';
+require_once dirname(__FILE__).'/../../integration/DBMaker.class.php';
 
 class SensorsDBTest extends PHPUnit_Framework_TestCase {
 	
 	public function testGetAllSensors() {
-		$myDb = DBMaker::create('sensordatarepotest');
+		$myDb = DBMaker::create('dataframetest');
 		Database::clearDB();
-		$db = Database::getDB('sensordatarepotest', 'C:\xampp\myConfig.ini');
+		$db = Database::getDB('dataframetest', '/home/mr-augustine/myConfig.ini');
 		
 		$sensors = SensorsDB::getSensorsBy();
 		
@@ -23,9 +23,9 @@ class SensorsDBTest extends PHPUnit_Framework_TestCase {
 	}
 	
 	public function testInsertValidSensor() {
-		$myDb = DBMaker::create('sensordatarepotest');
+		$myDb = DBMaker::create('dataframetest');
 		Database::clearDB();
-		$db = Database::getDB('sensordatarepotest', 'C:\xampp\myConfig.ini');
+		$db = Database::getDB('dataframetest', '/home/mr-augustine/myConfig.ini');
 		
 		$validTest = array('dataset_id' => 1,
 			'sensor_name' => 'front_camera',
@@ -47,9 +47,9 @@ class SensorsDBTest extends PHPUnit_Framework_TestCase {
 	}
 	
 	public function testInsertInvalidSensor() {
-		$myDb = DBMaker::create('sensordatarepotest');
+		$myDb = DBMaker::create('dataframetest');
 		Database::clearDB();
-		$db = Database::getDB('sensordatarepotest', 'C:\xampp\myConfig.ini');
+		$db = Database::getDB('dataframetest', '/home/mr-augustine/myConfig.ini');
 		
 		$invalidTest = array('dataset_id' => 1,
 			'sensor_name' => 'front_camera',
@@ -72,15 +72,15 @@ class SensorsDBTest extends PHPUnit_Framework_TestCase {
 	
 	// Duplicate sensor names are allowed
 // 	public function testInsertDuplicateSensor() {
-// 		$myDb = DBMaker::create('sensordatarepotest');
+// 		$myDb = DBMaker::create('dataframetest');
 // 		Database::clearDB();
-// 		$db = Database::getDB('sensordatarepotest', 'C:\xampp\myConfig.ini');
+// 		$db = Database::getDB('dataframetest', '/home/mr-augustine/myConfig.ini');
 // 	}
 	
 	public function testGetSensorsBySensorId() {
-		$myDb = DBMaker::create('sensordatarepotest');
+		$myDb = DBMaker::create('dataframetest');
 		Database::clearDB();
-		$db = Database::getDB('sensordatarepotest', 'C:\xampp\myConfig.ini');
+		$db = Database::getDB('dataframetest', '/home/mr-augustine/myConfig.ini');
 		$testSensorId = 2;
 		$sensors = SensorsDB::getSensorsBy('sensor_id', $testSensorId);
 		
@@ -93,9 +93,9 @@ class SensorsDBTest extends PHPUnit_Framework_TestCase {
 	}
 	
 	public function testGetSensorsBySensorName() {
-		$myDb = DBMaker::create('sensordatarepotest');
+		$myDb = DBMaker::create('dataframetest');
 		Database::clearDB();
-		$db = Database::getDB('sensordatarepotest', 'C:\xampp\myConfig.ini');
+		$db = Database::getDB('dataframetest', '/home/mr-augustine/myConfig.ini');
 		$testSensorName = 'compass0';
 		$sensors = SensorsDB::getSensorsBy('sensor_name', $testSensorName);
 		
@@ -105,9 +105,9 @@ class SensorsDBTest extends PHPUnit_Framework_TestCase {
 	}
 	
 	public function testGetSensorsByDatasetId() {
-		$myDb = DBMaker::create('sensordatarepotest');
+		$myDb = DBMaker::create('dataframetest');
 		Database::clearDB();
-		$db = Database::getDB('sensordatarepotest', 'C:\xampp\myConfig.ini');
+		$db = Database::getDB('dataframetest', '/home/mr-augustine/myConfig.ini');
 		$testDatasetId = 1;
 		$sensors = SensorsDB::getSensorsBy('dataset_id', $testDatasetId);
 		
@@ -117,9 +117,9 @@ class SensorsDBTest extends PHPUnit_Framework_TestCase {
 	}
 	
 	public function testUpdateSensorName() {
-		$myDb = DBMaker::create('sensordatarepotest');
+		$myDb = DBMaker::create('dataframetest');
 		Database::clearDB();
-		$db = Database::getDB('sensordatarepotest', 'C:\xampp\myConfig.ini');
+		$db = Database::getDB('dataframetest', '/home/mr-augustine/myConfig.ini');
 		$testSensorId = 3;
 		
 		$sensors = SensorsDB::getSensorsBy('sensor_id', $testSensorId);
@@ -142,9 +142,9 @@ class SensorsDBTest extends PHPUnit_Framework_TestCase {
 	}
 	
 	public function testUpdateSensorDescription() {
-		$myDb = DBMaker::create('sensordatarepotest');
+		$myDb = DBMaker::create('dataframetest');
 		Database::clearDB();
-		$db = Database::getDB('sensordatarepotest', 'C:\xampp\myConfig.ini');
+		$db = Database::getDB('dataframetest', '/home/mr-augustine/myConfig.ini');
 		$testSensorId = 1;
 		
 		$sensors = SensorsDB::getSensorsBy('sensor_id', $testSensorId);
@@ -168,9 +168,9 @@ class SensorsDBTest extends PHPUnit_Framework_TestCase {
 	}
 	
 	public function testUpdateSensorType() {
-		$myDb = DBMaker::create('sensordatarepotest');
+		$myDb = DBMaker::create('dataframetest');
 		Database::clearDB();
-		$db = Database::getDB('sensordatarepotest', 'C:\xampp\myConfig.ini');
+		$db = Database::getDB('dataframetest', '/home/mr-augustine/myConfig.ini');
 		$testSensorId = 2;
 		
 		$sensors = SensorsDB::getSensorsBy('sensor_id', $testSensorId);
@@ -193,9 +193,9 @@ class SensorsDBTest extends PHPUnit_Framework_TestCase {
 	}
 	
 	public function testUpdateSensorUnits() {
-		$myDb = DBMaker::create('sensordatarepotest');
+		$myDb = DBMaker::create('dataframetest');
 		Database::clearDB();
-		$db = Database::getDB('sensordatarepotest', 'C:\xampp\myConfig.ini');
+		$db = Database::getDB('dataframetest', '/home/mr-augustine/myConfig.ini');
 		$testSensorId = 2;
 		
 		$sensors = SensorsDB::getSensorsBy('sensor_id', $testSensorId);
@@ -218,9 +218,9 @@ class SensorsDBTest extends PHPUnit_Framework_TestCase {
 	}
 	
 	public function testUpdateSequenceType() {
-		$myDb = DBMaker::create('sensordatarepotest');
+		$myDb = DBMaker::create('dataframetest');
 		Database::clearDB();
-		$db = Database::getDB('sensordatarepotest', 'C:\xampp\myConfig.ini');
+		$db = Database::getDB('dataframetest', '/home/mr-augustine/myConfig.ini');
 		$testSensorId = 2;
 		
 		$sensors = SensorsDB::getSensorsBy('sensor_id', $testSensorId);

@@ -64,6 +64,16 @@ class DBMaker {
 			)ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci");
 			$st->execute();
 			
+            $st = $db->prepare("DROP TABLE if EXISTS SensorTypes");
+            $st->execute();
+            $st = $db->prepare("CREATE TABLE SensorTypes (
+                sensor_type_id      int(11) NOT NULL AUTO_INCREMENT,
+                sensor_type_name    varchar(32) NOT NULL UNIQUE COLLATE utf8_unicode_ci,
+                description         varchar(128) COLLATE utf8_unicode_ci,
+                PRIMARY KEY (sensor_type_id)
+            )ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci");
+            $st->execute();
+
 			$st = $db->prepare("DROP TABLE if EXISTS Measurements");
 			$st->execute();
 			$st = $db->prepare("CREATE TABLE Measurements (
@@ -100,7 +110,14 @@ class DBMaker {
 			$st = $db->prepare($sql);
 			$st->execute(array(':dataset_id' => 1, ':user_id' => 1, ':dataset_name' => 'Lincoln Park Run', ':description' => 'Lovely day for a walk with my robot'));
 			
-			
+		    // Populate the SensorTypes table
+            $sql = "INSERT INTO SensorTypes (sensor_type_id, sensor_type_name, description) VALUES 
+                (:sensor_type_id, :sensor_type_name, :description)";
+            $st = $db->prepare($sql);
+            $st->execute(array(':sensor_type_id' => 1, ':sensor_type_name' => 'DISTANCE', ':description' => 'A count of how far something has traveled'));
+            $st->execute(array(':sensor_type_id' => 2, ':sensor_type_name' => 'RANGE', ':description' => 'Measures how far away an object is'));
+            $st->execute(array(':sensor_type_id' => 3, ':sensor_type_name' => 'IMAGING', ':description' => 'Represents a 2D picture of something'));
+            
 			// Populate the Sensors table
 			$sql = "INSERT INTO Sensors (sensor_id, dataset_id, sensor_name, sensor_type, sensor_units, sequence_type, description) VALUES
     			(:sensor_id, :dataset_id, :sensor_name, :sensor_type, :sensor_units, :sequence_type, :description)";

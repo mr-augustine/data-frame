@@ -125,12 +125,13 @@ class SensorsDB {
 			if (is_null($sensor) || $sensor->getErrorCount() > 0)
 				return $sensor;
 			
-			$checkSensor = SensorsDB::getSensorsBy('sensor_id', $sensor->getSensorId());
+			$checkSensorArray = SensorsDB::getSensorsBy('sensor_id', $sensor->getSensorId());
 			
-			if (empty($checkSensor)) {
+			if (empty($checkSensorArray)) {
 				$sensor->setError('sensor_id', 'SENSOR_DOES_NOT_EXIST');
 				return $sensor;
 			}
+            $checkSensor = $checkSensorArray[0];
 			if ($checkSensor->getErrorCount() > 0)
 				return $sensor;
 			

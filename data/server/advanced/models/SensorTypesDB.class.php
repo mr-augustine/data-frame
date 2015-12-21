@@ -21,7 +21,7 @@ class SensorTypesDB {
 			$statement->closeCursor();
 			
 			$newSensorTypeId = $db->lastInsertId('sensor_type_id');
-			$sensorType->setSensorId($newSensorTypeId);
+			$sensorType->setSensorTypeId($newSensorTypeId);
 		} catch (Exception $e) {
 			$sensorType->setError('sensor_type_id', 'SENSOR_TYPE_INVALID');
 		}
@@ -116,12 +116,13 @@ class SensorTypesDB {
 			if (is_null($sensorType) || $sensorType->getErrorCount() > 0)
 				return $sensorType;
 			
-			$checkSensorType = SensorTypesDB::getSensorTypesBy('sensor_type_id', $sensorType->getSensorTypeId());
+			$checkSensorTypeArray = SensorTypesDB::getSensorTypesBy('sensor_type_id', $sensorType->getSensorTypeId());
 			
-			if (empty($checkSensorType)) {
+			if (empty($checkSensorTypeArray)) {
 				$sensorType->setError('sensor_type_id', 'SENSOR_TYPE_DOES_NOT_EXIST');
 				return $sensorType;
 			}
+            $checkSensorType = $checkSensorTypeArray[0];
 			if ($checkSensorType->getErrorCount() > 0)
 				return $sensorType;
 			
