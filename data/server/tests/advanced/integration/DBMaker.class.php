@@ -119,6 +119,7 @@ class DBMaker {
 					VALUES (:dataset_id, :user_id, :dataset_name, :description)";
 			$st = $db->prepare($sql);
 			$st->execute(array(':dataset_id' => 1, ':user_id' => 1, ':dataset_name' => 'Lincoln Park Run', ':description' => 'Lovely day for a walk with my robot'));
+			$st->execute(array(':dataset_id' => 2, ':user_id' => 1, ':dataset_name' => 'Childless Dataset', ':description' => 'This dataset has no children'));
 			
 		    // Populate the SensorTypes table
             $sql = "INSERT INTO SensorTypes (sensor_type_id, sensor_type_name, description) VALUES 
