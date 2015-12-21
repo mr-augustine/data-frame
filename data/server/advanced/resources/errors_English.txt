@@ -53,12 +53,15 @@ SENSOR_TYPE_COULD_NOT_BE_UPDATED The sensor type could not be updated
 SENSOR_TYPE_DESCRIPTION_TOO_LONG The sensor type description is too long
 SENSOR_TYPE_DOES_NOT_EXIST The sensor type with the specified id does not exist
 SENSOR_TYPE_EMPTY The sensor type cannot be empty
-SENSOR_TYPE_INVALID The sensor type is invalid
+SENSOR_TYPE_INVALID The sensor type could not be created
 SENSOR_TYPE_NAME_EMPTY The sensor type name cannot be empty
 SENSOR_TYPE_NAME_INVALID_CHARS The sensor type name contains invalid characters
 SENSOR_TYPE_NAME_TOO_LONG The sensor type name is too long
 SENSOR_TYPE_NAME_TOO_SHORT The sensor type name is too short
+SENSOR_UNIT_COULD_NOT_BE_UPDATED The sensor unit could not be updated
 SENSOR_UNIT_DESCRIPTION_TOO_LONG The sensor unit description is too long
+SENSOR_UNIT_DOES_NOT_EXIST The sensor unit with the specified id does not exist
+SENSOR_UNIT_INVALID The sensor unit could not be created
 SENSOR_UNIT_NAME_EMPTY The sensor unit name cannot be empty
 SENSOR_UNIT_NAME_INVALID_CHARS The sensor unit name contains invalid characters
 SENSOR_UNIT_NAME_TOO_LONG The sensor unit name is too long
