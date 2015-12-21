@@ -36,6 +36,14 @@ CREATE TABLE Sensors (
     FOREIGN KEY (dataset_id) REFERENCES Datasets(dataset_id)
 )ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
+DROP TABLE if EXISTS SensorTypes;
+CREATE TABLE SensorTypes (
+    sensor_type_id      int(11) NOT NULL AUTO_INCREMENT,
+    sensor_type_name    varchar(32) NOT NULL COLLATE utf8_unicode_ci,
+    description         varchar(128) COLLATE utf8_unicode_ci,
+    PRIMARY KEY (sensor_type_id)
+)ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
 DROP TABLE if EXISTS Measurements;
 CREATE TABLE Measurements (
     measurement_id          int(11) NOT NULL AUTO_INCREMENT,

@@ -131,7 +131,7 @@ class SensorsDB {
 				$sensor->setError('sensor_id', 'SENSOR_DOES_NOT_EXIST');
 				return $sensor;
 			}
-			if ($sensor->getErrorCount() > 0)
+			if ($checkSensor->getErrorCount() > 0)
 				return $sensor;
 			
 			$query = "UPDATE Sensors SET sensor_name = :sensor_name,
