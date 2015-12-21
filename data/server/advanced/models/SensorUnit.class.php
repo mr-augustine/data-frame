@@ -41,15 +41,15 @@ class SensorUnit {
 	}
 	
 	public function getSensorUnitId() {
-		return $this->sensor_type_id;
+		return $this->sensor_unit_id;
 	}
 	
 	public function setSensorUnitId($id) {
-		$this->sensor_type_id = $id;
+		$this->sensor_unit_id = $id;
 	}
 	
 	public function getSensorUnitName() {
-		return $this->sensor_type_name;
+		return $this->sensor_unit_name;
 	}
 	
 	public function getDescription() {

@@ -44,6 +44,14 @@ CREATE TABLE SensorTypes (
     PRIMARY KEY (sensor_type_id)
 )ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
+DROP TABLE if EXISTS SensorUnits;
+CREATE TABLE SensorUnits (
+    sensor_unit_id      int(11) NOT NULL AUTO_INCREMENT,
+    sensor_unit_name    varchar(32) NOT NULL UNIQUE COLLATE utf8_unicode_ci,
+    description         varchar(128) COLLATE utf8_unicode_ci,
+    PRIMARY KEY (sensor_unit_id)
+)ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
 DROP TABLE if EXISTS Measurements;
 CREATE TABLE Measurements (
     measurement_id          int(11) NOT NULL AUTO_INCREMENT,
@@ -90,6 +98,11 @@ INSERT INTO SensorTypes (sensor_type_id, sensor_type_name, description) VALUES
     (2, 'RANGE', 'Measures how far away an object is');
 INSERT INTO SensorTypes (sensor_type_id, sensor_type_name, description) VALUES
     (3, 'IMAGING', 'Represents a 2D picture of something');
+
+INSERT INTO SensorUnits (sensor_unit_id, sensor_unit_name, description) VALUES
+    (1, 'CENTIMETERS', 'Mostly used for ranging, but can be used for distance too');
+INSERT INTO SensorUnits (sensor_unit_id, sensor_unit_name, description) VALUES
+    (2, 'COLOR', 'Images that display things in the visible light spectrum');
 
 INSERT INTO Measurements (measurement_id, measurement_index, measurement_value, measurement_timestamp, sensor_id) VALUES
     (1, 1, '45.2', NULL, 1);

@@ -74,6 +74,16 @@ class DBMaker {
             )ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci");
             $st->execute();
 
+            $st = $db->prepare("DROP TABLE if EXISTS SensorUnits");
+            $st->execute();
+            $st = $db->prepare("CREATE TABLE SensorUnits (
+                sensor_unit_id      int(11) NOT NULL AUTO_INCREMENT,
+                sensor_unit_name    varchar(32) NOT NULL UNIQUE COLLATE utf8_unicode_ci,
+                description         varchar(128) COLLATE utf8_unicode_ci,
+                PRIMARY KEY (sensor_unit_id)
+            )ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci");
+            $st->execute();
+
 			$st = $db->prepare("DROP TABLE if EXISTS Measurements");
 			$st->execute();
 			$st = $db->prepare("CREATE TABLE Measurements (
@@ -118,6 +128,13 @@ class DBMaker {
             $st->execute(array(':sensor_type_id' => 2, ':sensor_type_name' => 'RANGE', ':description' => 'Measures how far away an object is'));
             $st->execute(array(':sensor_type_id' => 3, ':sensor_type_name' => 'IMAGING', ':description' => 'Represents a 2D picture of something'));
             
+		    // Populate the SensorUnits table
+            $sql = "INSERT INTO SensorUnits (sensor_unit_id, sensor_unit_name, description) VALUES 
+                (:sensor_unit_id, :sensor_unit_name, :description)";
+            $st = $db->prepare($sql);
+            $st->execute(array(':sensor_unit_id' => 1, ':sensor_unit_name' => 'CENTIMETERS', ':description' => 'Mostly used for ranging, but can be used for distance too'));
+            $st->execute(array(':sensor_unit_id' => 2, ':sensor_unit_name' => 'COLOR', ':description' => 'Images that display things in the visible light spectrum'));
+
 			// Populate the Sensors table
 			$sql = "INSERT INTO Sensors (sensor_id, dataset_id, sensor_name, sensor_type, sensor_units, sequence_type, description) VALUES
     			(:sensor_id, :dataset_id, :sensor_name, :sensor_type, :sensor_units, :sequence_type, :description)";
