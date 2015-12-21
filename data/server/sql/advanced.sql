@@ -84,6 +84,8 @@ INSERT INTO Users (user_id, username, password) VALUES
 
 INSERT INTO Datasets (dataset_id, user_id, dataset_name, description) VALUES
     (1, 1, 'Lincoln Park Run', 'Lovely day for a walk with my robot');
+INSERT INTO Datasets (dataset_id, user_id, dataset_name, description) VALUES
+    (2, 1, 'Childless Dataset', 'This dataset has no children');
     
 INSERT INTO Sensors (sensor_id, dataset_id, sensor_name, sensor_type, sensor_units, sequence_type, description) VALUES
     (1, 1, 'compass0', 'HEADING', 'DEGREES', 'SEQUENTIAL', "The robot's only compass. Placed ontop a mast.");

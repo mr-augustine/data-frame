@@ -16,7 +16,7 @@ class DatasetsDBTest extends PHPUnit_Framework_TestCase {
 		
 		$datasets = DatasetsDB::getDatasetsBy();
 		
-		$this->assertEquals(1, count($datasets),
+		$this->assertEquals(2, count($datasets),
 				'It should fetch all of the datasets in the test database');
 		
 		foreach ($datasets as $dataset)
@@ -89,7 +89,7 @@ class DatasetsDBTest extends PHPUnit_Framework_TestCase {
 		$testUserId = 1;
 		$datasets = DatasetsDB::getDatasetsBy('user_id', $testUserId);
 		
-		$this->assertEquals(1, count($datasets),
+		$this->assertEquals(2, count($datasets),
 				'The database should return exactly one datasets with the provided user id');
 		
 		$dataset = $datasets[0];
@@ -180,14 +180,13 @@ class DatasetsDBTest extends PHPUnit_Framework_TestCase {
         Database::clearDB();
         $db = Database::getDB('dataframetest', '/home/mr-augustine/myConfig.ini');
 
-        $testDatasetId = 1;
+        $testDatasetId = 2;
         $datasets = DatasetsDB::getDatasetsBy('dataset_id', $testDatasetId);
         $existingDataset = $datasets[0];
 
         $beforeCount = count(DatasetsDB::getDatasetsBy());
         $deletedDataset = DatasetsDB::deleteDataset($existingDataset);
         $afterCount = count(DatasetsDB::getDatasetsBy());
-        print_r($deletedDataset->getErrors());
         $this->assertEquals(0, $deletedDataset->getErrorCount(),
             'The deleted dataset should be error-free');
         $this->assertEquals($beforeCount - 1, $afterCount,
@@ -195,7 +194,25 @@ class DatasetsDBTest extends PHPUnit_Framework_TestCase {
     }
 
     public function testDeleteNonexistentDataset() {
+        $myDb = DBMaker::create('dataframetest');
+        Database::clearDB();
+        $db = Database::getDB('dataframetest', '/home/mr-augustine/myConfig.ini');
 
+        $invalidDatasetId = 99;
+
+        $this->assertEquals(0, count(DatasetsDB::getDatasetsBy('dataset_id', $invalidDatasetId)),
+            'The specified dataset should not exist in the database');
+
+        $validParams = array('user_id' => 2, 'dataset_id' => $invalidDatasetId,
+             'dataset_name' => 'nope', 'description' => 'This dataset does not exist');
+        $nonexistentDataset = new Dataset($validParams);
+
+        $beforeCount = count(DatasetsDB::getDatasetsBy());
+        $deletedDataset = DatasetsDB::deleteDataset($nonexistentDataset);
+        $afterCount = count(DatasetsDB::getDatasetsBy());
+
+        $this->assertEquals($afterCount, $beforeCount,
+            'The database should maintain the same number of datasets');
     }
 }
 ?>
