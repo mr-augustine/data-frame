@@ -93,6 +93,8 @@ INSERT INTO Sensors (sensor_id, dataset_id, sensor_name, sensor_type, sensor_uni
     (2, 1, 'ping0', 'RANGE', 'CENTIMETERS', 'SEQUENTIAL', "The robot's only ultrasonic sensor. Placed at the front/center.");
 INSERT INTO Sensors (sensor_id, dataset_id, sensor_name, sensor_type, sensor_units, sequence_type, description) VALUES
     (3, 1, 'bump0', 'BINARY', 'ON-OFF', 'SEQUENTIAL', "The robot's only bump switch. Placed at the front/center.");
+INSERT INTO Sensors (sensor_id, dataset_id, sensor_name, sensor_type, sensor_units, sequence_type, description) VALUES
+    (4, 1, 'bump1', 'BINARY', 'ON-OFF', 'SEQUENTIAL', "This sensor has no measurements.");
     
 INSERT INTO SensorTypes (sensor_type_id, sensor_type_name, description) VALUES
     (1, 'DISTANCE', 'A count of how far something has traveled');

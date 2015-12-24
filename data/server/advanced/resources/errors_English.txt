@@ -39,6 +39,7 @@ PASSWORD_EMPTY The password cannot be empty
 PASSWORD_INVALID_CHARS The password contains invalid characters
 PASSWORD_TOO_LONG The password must be no more than 32 characters long
 PASSWORD_TOO_SHORT The password must be at least 8 characters long
+SENSOR_COULD_NOT_BE_DELETED The sensor could not be deleted
 SENSOR_COULD_NOT_BE_UPDATED The sensor could not be updated
 SENSOR_DESCRIPTION_TOO_LONG The sensor description is too long
 SENSOR_DOES_NOT_EXIST The sensor with the specified id does not exist

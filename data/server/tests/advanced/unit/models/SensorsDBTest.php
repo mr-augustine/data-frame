@@ -14,7 +14,7 @@ class SensorsDBTest extends PHPUnit_Framework_TestCase {
 		
 		$sensors = SensorsDB::getSensorsBy();
 		
-		$this->assertEquals(3, count($sensors),
+		$this->assertEquals(4, count($sensors),
 				'It should fetch all of the sensors in the test database');
 		
 		foreach ($sensors as $sensor)
@@ -241,5 +241,47 @@ class SensorsDBTest extends PHPUnit_Framework_TestCase {
 		$this->assertTrue(empty($returnedSensor->getErrors()),
 				'The updated sensor should be error-free');
 	}
+
+    public function testDeleteExistingSensor() {
+        $myDb = DBMaker::create('dataframetest');
+        Database::clearDB();
+        $db = Database::getDB('dataframetest', '/home/mr-augustine/myConfig.ini');
+
+        $testSensorId = 4;
+        $sensors = SensorsDB::getSensorsBy('sensor_id', $testSensorId);
+        $existingSensor = $sensors[0];
+
+        $beforeCount = count(SensorsDB::getSensorsBy());
+        $deletedSensor = SensorsDB::deleteSensor($existingSensor);
+        $afterCount = count(SensorsDB::getSensorsBy());
+        $this->assertEquals(0, $deletedSensor->getErrorCount(),
+            'The deleted sensor should be error-free');
+        $this->assertEquals($beforeCount - 1, $afterCount,
+            'The database should have one less sensor in the Sensors table');
+    }
+
+    public function testDeleteNonexistentSensor() {
+        $myDb = DBMaker::create('dataframetest');
+        Database::clearDB();
+        $db = Database::getDB('dataframetest', '/home/mr-augustine/myConfig.ini');
+
+        $invalidSensorId = 99;
+
+        $this->assertEquals(0, count(SensorsDB::getSensorsBy('dataset_id', $invalidSensorId)),
+            'The specified sensor should not exist in the database');
+
+        $validParams = array('sensor_id' => $invalidSensorId, 'dataset_id' => 1,
+            'sensor_name' => 'valid_sensor_name', 'sensor_type' => 'DISTANCE',
+            'sensor_units' => 'FEET', 'sequence_type' => 'SEQUENTIAL',
+            'description' => 'This sensor does not exist');
+        $nonexistentSensor = new Sensor($validParams);
+
+        $beforeCount = count(SensorsDB::getSensorsBy());
+        $deletedSensor = SensorsDB::deleteSensor($nonexistentSensor);
+        $afterCount = count(SensorsDB::getSensorsBy());
+
+        $this->assertEquals($afterCount, $beforeCount,
+            'The database should maintain the same number of sensors');
+    }
 }
 ?>

@@ -33,6 +33,29 @@ class SensorsDB {
 		
 		return $sensor;
 	}
+
+    // Deletes a Sensor from the database. Returns the Sensor unchanged
+    // if successful. Returns the Sensor with a sensor_id error if there
+    // is a database issue. This function assumes that the specified
+    // sensor does has no associated measurements.
+    public static function deleteSensor($sensor) {
+        try {
+            if (is_null($sensor) || $sensor->getErrorCount() > 0)
+                return $sensor;
+
+            $db = Database::getDB();
+            $deleteQuery = "DELETE from Sensors WHERE sensor_id = :sensor_id";
+            $statement = $db->prepare($deleteQuery);
+            $statement->bindValue(':sensor_id', $sensor->getSensorId());
+            $statement->execute();
+            $statement->closeCursor();
+        } catch (Exception $e) {
+            $sensor->setError('sensor_id', 'SENSOR_COULD_NOT_BE_DELETED');
+            print($e->getMessage());
+        }
+
+        return $sensor;
+    }
 	
 	// Returns an array of Sensors that meet the criteria specified.
 	// If unsuccessful, this function returns an empty array.
