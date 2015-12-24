@@ -166,7 +166,27 @@ class UsersDBTest extends PHPUnit_Framework_TestCase {
     }
 
     public function testDeleteNonExistentUser() {
+        $myDb = DBMaker::create('dataframetest');
+        Database::clearDB();
+        $db = Database::getDB('dataframetest', '/home/mr-augustine/myConfig.ini');
 
+        $testUserId = 99;
+        $users = UsersDB::getUsersBy('user_id', $testUserId);
+        $this->assertEquals(0, count($users),
+            'The database should not produce any users with the given user id');
+
+        $nonexistentUser = new User(array('user_id' => $testUserId,
+            'username' => 'valid_username',
+            'password' => 'valid_password'));
+        $this->assertEquals(0, $nonexistentUser->getErrorCount(),
+            'The user should be error-free');
+
+        $beforeCount = UsersDB::getUsersBy();
+        $returnedUser = UsersDB::deleteUser($nonexistentUser);
+        $afterCount = UsersDB::getUsersBy();
+
+        $this->assertEquals($beforeCount, $afterCount,
+            'The database should have the same number of users after the deletion attempt');
     }
 }
 ?>

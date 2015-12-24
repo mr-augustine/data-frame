@@ -149,7 +149,9 @@ class DBMaker {
 			$st->execute(array(':sensor_id' => 3, ':dataset_id' => 1, ':sensor_name' => 'bump0',
 					':sensor_type' => 'BINARY', ':sensor_units' => 'ON-OFF', ':sequence_type' => 'SEQUENTIAL',
 					':description' => "The robot's only bump switch. Placed at the front/center."));
-			
+			$st->execute(array(':sensor_id' => 4, ':dataset_id' => 1, ':sensor_name' => 'bump1',
+					':sensor_type' => 'BINARY', ':sensor_units' => 'ON-OFF', ':sequence_type' => 'SEQUENTIAL',
+					':description' => "This sensor has no measurements"));
 			
 			// Populate the Measurements table
 			$sql = "INSERT INTO Measurements (measurement_id, measurement_index, measurement_value, measurement_timestamp, sensor_id) VALUES
