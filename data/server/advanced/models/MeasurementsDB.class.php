@@ -56,6 +56,7 @@ class MeasurementsDB {
 					throw new PDOException("$type not an allowed search criterion for Measurements");
 				
 				$query = $query . " WHERE ($type = :$type)";
+				$query = $query . " ORDER BY measurement_index ASC";
 				$statement = $db->prepare($query);
 				$statement->bindParam(":$type", $value);
 			} else {
